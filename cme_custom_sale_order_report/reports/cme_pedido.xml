@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_pedido_document_cme">
+            <t t-call="web.internal_layout">
+                <t t-set="o" t-value="o.with_context(lang=lang)" />
+                <t t-set="total_peso" t-value="0"/>
+                <div class="page">
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <h4 style="display:inline" class="text-center">Corporación CME</h4>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row justify-content-end">
+                        <div class="col-4">
+                        </div>
+                        <div class="col-4 text-center">
+                            <h4 style="display:inline">***Preliminar***</h4>
+                        </div>
+                        <div class="col-4 text-right">
+                            <b t-field="o.name"/>
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col-7">
+                        <h5 style=" font-weight: bold; font-size: 15px; display:inline" >Cliente: </h5><span t-field="o.partner_id.vat" style="text-transform: uppercase;"/> <span t-field="o.partner_id.name" style="text-transform: uppercase;"/>
+                        </div>
+                        <div class="col-5">
+                        <h5 style=" font-weight: bold; font-size: 15px; display:inline">Fecha: </h5> <span t-field="o.date_order" t-options='{"widget": "date"}'/>
+                        </div>
+                    </div>
+                    <div class="row justify-content-between">
+                        <div class="col-7">
+                            <h5 style=" font-weight: bold; font-size: 15px; color:white; display:inline">Cliente:  </h5>
+                            <t t-if="o.partner_id.parent_id">
+                                <span t-field="o.partner_id.parent_id.name" style="text-transform: uppercase;"/>
+                            </t>
+                            <t t-if="o.partner_id.parent_id == False ">
+                                <span t-field="o.partner_id.name" style="text-transform: uppercase;"/>
+                            </t>
+                        </div>
+                        <div class="col-5">
+                        <h5 style=" font-weight: bold; font-size: 15px; display:inline">Hora:</h5>
+                            <span t-esc="o.date_order.strftime('%H:%M:%S')"  />
+                        </div>
+                    </div>
+                    <div class="row justify-content-between">
+                        <div class="col-7">
+                        <h5 style=" font-weight: bold; font-size: 15px; display:inline">Direcc.: </h5><span t-field="o.partner_id.street"/>
+                        </div>
+                        <div class="col-5">
+                        </div>
+                    </div>
+                    <div class="row justify-content-between">
+                        <div class="col-7">
+                            <h5 style=" font-weight: bold; font-size: 15px; color:white; display:inline">Direcc.: </h5>
+                            <span t-field="o.partner_id.city_id.name"/>
+                            <span t-field="o.partner_id.state_id.name"/>
+                        </div>
+                        <div class="col-5">
+                            <h5 style=" font-weight: bold; font-size: 15px; display:inline">Tel.: </h5><span t-field="o.partner_id.phone"/>
+                        </div>
+                    </div>
+                    <div class="row justify-content-between">
+                        <div class="col-4">
+                            <h5 style=" font-weight: bold; font-size: 15px; display:inline">Vend.: </h5><span t-field="o.user_id.name"/>
+                        </div>
+                        <div class="col-3">
+                        <h5 style=" font-weight: bold; font-size: 15px; display:inline">Enviar </h5>
+                        </div>
+                        <div class="col-5">
+                            <h5 style=" font-weight: bold; font-size: 15px; display:inline">Ref.: </h5><span t-field="o.client_order_ref"/>
+                        </div>
+                    </div>
+                    <div class="row justify-content-between">
+                        <div class="col-4">
+                        </div>
+                        <div class="col-4">
+                        <h5 style=" font-weight: bold; font-size: 15px; display:inline">por </h5> <span t-field="o.user_id.name"/>
+                        </div>
+                        <div class="col-4">
+                        </div>
+                    </div>
+                    <div class="row justify-content-between">
+                        <div class="col-12">
+                            <h5 style=" font-weight: bold; font-size: 15px; display:inline">Notas: </h5>
+                        </div>
+
+                    </div>
+
+<!--                    Tabla de lineas de pedido -->
+                    <div class="row" style="margin-bottom:300px;">
+                        <div class="col-12">
+                            <table width="100%" >
+                                <tr style="border-top: 1px solid black; border-bottom: 1px solid black;">
+                                    <th class="text-center">ID</th>
+                                    <th class="text-center">Producto</th>
+                                    <th class="text-center">Cantidad</th>
+                                    <th class="text-center">Unidad</th>
+                                    <th class="text-center">Bodega</th>
+                                    <th class="text-center">Peso</th>
+                                </tr>
+                                <t t-foreach="o.order_line" t-as="order_line">
+                                    <tr>
+                                        <td><span t-field="order_line.product_id.default_code"/></td>
+                                        <td><span t-field="order_line.product_id.name"/></td>
+                                        <td><span t-field="order_line.product_uom_qty"/></td>
+                                        <td><span t-field="order_line.product_uom.name"/></td>
+                                        <td><span t-field="o.warehouse_id.code"/></td>
+                                        <td><span t-field="order_line.weight"/></td>
+                                    </tr>
+                                    <t t-set="total_peso" t-value="total_peso + order_line.weight"/>
+                                </t>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row" >
+                        <div class="col-1"></div>
+                        <div class="col-2 text-center" style="border-top: 1px solid black;">
+                            <b>Entregó</b>
+                        </div>
+                        <div class="col-1"></div>
+                        <div class="col-2 text-center" style="border-top: 1px solid black;">
+                            <b>Recibió</b>
+                        </div>
+                        <div class="col-1"></div>
+                        <div class="col-2 text-center" style="border-top: 1px solid black;">
+                            <b>Total Peso:</b>
+                        </div>
+                        <div class="col-1"></div>
+                        <div class="col-2 text-center" style="border-top: 1px solid black;">
+                            <b><t t-esc="total_peso"/></b>
+                        </div>
+
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <template id="cme_pedido">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="lang" t-value="o.partner_id.lang"/>
+                    <t t-call="cme_custom_sale_order_report.report_pedido_document_cme" t-lang="lang"/>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

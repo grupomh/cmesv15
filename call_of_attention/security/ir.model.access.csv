@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_call_of_attention,access.call.of.attention,model_call_of_attention,call_of_attention.group_call_of_attention_user,1,1,1,0
+access_call_of_attention_manager,access.call.of.attention.manager,model_call_of_attention,call_of_attention.group_call_of_attention_manager,1,1,1,0
+access_call_of_attention_manager_super,access.call.of.attention.manager_super,model_call_of_attention,call_of_attention.group_call_of_attention_manager_super,1,1,1,1

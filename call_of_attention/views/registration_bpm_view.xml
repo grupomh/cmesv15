@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="inherit_view_registration_bpm_form" model="ir.ui.view">
+            <field name="name">registration.bpm.view.form.inherit</field>
+            <field name="model">registration.bpm</field>
+            <field name="inherit_id" ref="quality_control_points.view_registration_bpm_form"/>
+            <field name="arch" type="xml">
+                <button name="print_report" position="after">                
+                    <button name="button_call_of_attention_action" type="object" string="Llamado de atencion" attrs="{'invisible': ['|',('name', '=', 'Nuevo')]}"/>
+                </button>
+                <div class="oe_title" position="before">
+                    <div name="button_box" class="oe_button_box">
+                    <button name="call_of_attention_action_open_" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('count_call_of_atention', '=', 0)]}" context="{'search_default_production_id': active_id}">
+                        <div class="o_stat_info">
+                            <span class="o_stat_value">
+                             <field name="count_call_of_atention"/>
+                            </span>
+                            <span class="o_stat_text">Llamado de atencion</span>
+                        </div>
+                    </button>
+                    </div>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>

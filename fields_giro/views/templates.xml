@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="field_of_giro">
+            <field name="name">field.of.giro</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='code']" position="after">
+                    <field name="giro" invisible="0" string="Giro" attrs="{'invisible': [('company_id', 'not in', [4])]}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,27 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="field_of_customers">
+            <field name="name">field.of.customers</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='vat']" position="after">
+                    <field name="dui" invisible="0" string="DUI" attrs="{'invisible': [('company_id', 'not in', [4])]}"/>
+                    <field name="nrc" invisible="0" string="NRC" attrs="{'invisible': [('company_id', 'not in', [4])]}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="field_of_customers_tree">
+            <field name="name">field.of.customers.tree</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='vat']" position="after">
+                    <field name="dui" invisible="0" string="DUI" optional="hide" attrs="{'invisible': [('company_id', 'not in', [4])]}"/>
+                    <field name="nrc" invisible="0" string="NRC" optional="hide" attrs="{'invisible': [('company_id', 'not in', [4])]}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

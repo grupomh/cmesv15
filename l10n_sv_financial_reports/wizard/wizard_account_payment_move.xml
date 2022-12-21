@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id='wizard_account_payment_move_form' model="ir.ui.view">
+            <field name="name">wizard.account.payment.move.form</field>
+            <field name="model">wizard.account.payment.move</field>
+            <field name="arch" type="xml">
+                <form string="Reporte Partida de Asiento">
+                    <group string="Reporte Partidas de asiento agrupadas">
+                        <group>
+                            <field name="group_by_document"/>
+                        </group>
+                        <group></group>
+                    </group>
+                    <notebook>
+                        <page name="page_payments" string="Pagos">
+                            <field name="payment_ids" nolabel="1"/>
+                        </page>
+                    </notebook>
+                    <footer>
+                        <button name="action_generate_report" string="Generar" type="object" class="btn-primary"/>
+                        <button string="Close" special="cancel"/>
+                    </footer>
+            </form>
+            </field>
+        </record>
+
+
+        <act_window
+            name="Reporte Asiento Contables (Agrupados)"
+            res_model="wizard.account.payment.move"
+            binding_model="account.payment"
+            binding_views="list,form"
+            view_mode="form"
+            target="new"
+            context="{'default_group_by_document': True, 'default_payment_ids': active_ids}"
+            view_id="wizard_account_payment_move_form"
+            id="action_report_account_payment_move_form"
+        />
+
+
+    </data>
+</odoo>

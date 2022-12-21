@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="footer_sv_tmp">
+        <div class="footer">
+            <div class="row">
+                <div class="col-12">
+                    <span style="float:left;margin-left:25px;font-size:14px;">Hecho Por:
+                        <b>
+                            <span t-field="doc.create_uid.name"/>
+                        </b>
+                    </span>
+                    <span style="float:left;margin-left:115px;font-size:14px;">Mayoriado Por:
+                        <b>
+                        </b>
+                    </span>
+                    <span style="float:left;margin-left:195px;font-size:14px;">Revisado Por:
+                        <b>
+                        </b>
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <!--<span style="float:left;margin-left:25px;font-size:14px;">Fecha y Hora de Generación:
+                        <b>
+                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/>
+                        </b>
+                    </span>-->
+                    <span style="float:right;margin-right:25px;font-size:14px;">Página:
+                        <b>
+                            <span class="page"/>
+                        </b>
+                        de
+                        <b>
+                            <span class="topage"/>
+                        </b>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="header_sv_tmp">
+        <thead>
+            <tr class="title_tr">
+                <th colspan="5">
+                    <span class="to_upper" t-field="doc.company_id.name"/>
+                </th>
+            </tr>
+            <tr style="font-size: 13px; text-align: center;">
+                <th colspan="5">
+                    Partida de <![CDATA[&nbsp;]]><span t-if="doc.journal_id" t-field="doc.journal_id.name"/><![CDATA[&nbsp;]]>
+                    No.<![CDATA[&nbsp;]]><span class="to_upper" t-field="doc.folio"/>
+                </th>
+            </tr>
+            <tr>
+                <th style="width: 50%; text-align: left;" colspan="5">
+                    <strong>Fecha:</strong><span t-if="doc.date" t-field="doc.date" t-options='{"format": "dd/MM/yyyy"}'/>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                    <strong>Notas:</strong><span t-if="doc.ref" t-field="doc.ref"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                    <strong>Sucursal.:</strong><span t-if="doc.branch_id" t-esc="doc.branch_id.name"/>
+                </th>
+                <!--<th style="width: 50%; text-align: left;" colspan="3">
+                    <strong>Notas:</strong><span t-field="doc.ref"/>
+                </th>-->
+            </tr>
+            <tr style="border-top: 1px solid black; border-bottom: 1px solid black;">
+                <th style="width: 10%; text-align: center;">
+                    ID
+                </th>
+                <th style="width: 50%;  text-align: center;">
+                    Cuenta Contable
+                </th>
+                <th style="width: 10%; text-align: center;">
+                    Parcial
+                </th>
+                <th style="width: 10%; text-align: center;">
+                    Debe
+                </th>
+                <th style="width: 10%; text-align: center;">
+                    Haber
+                </th>
+            </tr>
+        </thead>
+    </template>
+
+    <!--Custom Layout-->
+    <template id="custom_header_sv_tmp">
+        <thead>
+            <tr>
+                <th style="width: 10%; text-align: center;">
+                </th>
+                <th style="width: 50%;  text-align: center;">
+                </th>
+                <th style="width: 10%; text-align: center;">
+                </th>
+                <th style="width: 10%; text-align: center;">
+                </th>
+                <th style="width: 10%; text-align: center;">
+                </th>
+            </tr>
+            <tr class="title_tr">
+                <th colspan="5">
+                    <span class="to_upper" t-esc="company_name"/>
+                </th>
+            </tr>
+            <tr style="font-size: 13px; text-align: center;">
+                <th colspan="5">
+                    Partida de &amp;nbsp;<span t-esc="docu.get('journal', '')"/>&amp;nbsp;
+                    No.&amp;nbsp;
+                        <span t-esc="datetime.datetime.strptime(docu.get('date', False), '%Y-%m-%d').strftime('%Y')"/>-
+                        <span t-esc="datetime.datetime.strptime(docu.get('date', False), '%Y-%m-%d').strftime('%m')"/>-
+                        <span t-esc="docu.get('count', '')"/>
+                        &amp;nbsp;
+                </th>
+            </tr>
+            <tr>
+                <th style="text-align: left;" colspan="5">
+                    <strong>Fecha:</strong><span t-esc="datetime.datetime.strptime(docu.get('date', False), '%Y-%m-%d').strftime('%d/%m/%Y')"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                    <strong>Notas: Folio No.</strong><span t-esc="docu.get('document', '')"/>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                    <strong>Sucursal.:</strong><span t-esc="docu.get('branch', '')"/>
+                </th>
+            </tr>
+            <tr style="border-top: 1px solid black; border-bottom: 1px solid black;">
+                <th style="width: 10%; text-align: center;">
+                    ID
+                </th>
+                <th style="width: 50%;  text-align: center;">
+                    Cuenta Contable
+                </th>
+                <th style="width: 10%; text-align: center;">
+                    Parcial
+                </th>
+                <th style="width: 10%; text-align: center;">
+                    Debe
+                </th>
+                <th style="width: 10%; text-align: center;">
+                    Haber
+                </th>
+            </tr>
+        </thead>
+    </template>
+
+    <template id="custom_footer_sv_tmp">
+        <div class="footer">
+            <div class="row">
+                <div class="col-12">
+                    <span style="float:left;margin-left:25px;font-size:14px;">Hecho Por:
+                        <b>
+                        </b>
+                    </span>
+                    <span style="float:left;margin-left:115px;font-size:14px;">Mayorizado Por:
+                        <b>
+                        </b>
+                    </span>
+                    <span style="float:left;margin-left:195px;font-size:14px;">Revisado Por:
+                        <b>
+                        </b>
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <!--<span style="float:left;margin-left:25px;font-size:14px;">Fecha y Hora de Generación:
+                        <b>
+                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/>
+                        </b>
+                    </span>-->
+                    <span style="float:right;margin-right:25px;font-size:14px;">Página:
+                        <b>
+                            <span class="page"/>
+                        </b>
+                        de
+                        <b>
+                            <span class="topage"/>
+                        </b>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </template>
+
+</odoo>

@@ -1,0 +1,14 @@
+<odoo>
+<data>
+<record id="view_total_inverso" model="ir.ui.view">
+    <field name="name">view.total.inverso</field>
+    <field name="model">account.move</field>
+    <field name="inherit_id" ref="account.view_invoice_tree"/>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='amount_total_signed']" position="after">
+        <field name="total_inverso" string="Total Inverso" sum='total inverso' optional="hide"/>
+        </xpath>
+    </field>
+</record>
+</data>
+</odoo>

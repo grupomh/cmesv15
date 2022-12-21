@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <!--Category groups-->
+        <record id="category_check_tandas" model="ir.module.category">
+            <field name="name">Entrada check tandas</field>
+            <field name="description">Categoria check tandas</field>
+            <field name="sequence">11</field>
+        </record>
+    <!--Groups segurity-->
+        <record id="group_check_tandas_user" model="res.groups">
+            <field name="name">Permiso de solo activacion</field>
+            <field name="category_id" ref="custom_mrp_production_report.category_check_tandas"/>
+        </record>
+        <record id="group_check_tandas_manager" model="res.groups">
+            <field name="name">Permiso de activacion y desactivar</field>
+            <field name="category_id" ref="custom_mrp_production_report.category_check_tandas"/>
+        </record>            
+    </data>
+</odoo>

@@ -1,0 +1,9 @@
+<odoo>
+    <record id="group_weight" model="res.groups">
+        <field name="name"> Product Weight show</field>
+    </record>
+    <!--Security Group Margenes-->
+    <record id="group_sale_margin" model="res.groups">
+        <field name="name">Margenes/Costos en Ventas</field>
+    </record>
+</odoo>

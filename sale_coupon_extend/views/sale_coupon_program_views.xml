@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- sale.coupon.program inherit form view -->
+        <record id="sale_coupon_program_view_form_common_extend" model="ir.ui.view">
+            <field name="name">coupon.program.view.form.common.extend</field>
+            <field name="model">coupon.program</field>
+            <field name="inherit_id" ref="coupon.coupon_program_view_coupon_program_form"/>
+            <field name="arch" type="xml">
+                <field name="rule_min_quantity" position="after">
+                    <field name="rule_max_quantity" class="oe_inline"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

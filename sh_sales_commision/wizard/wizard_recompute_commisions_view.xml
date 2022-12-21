@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="wizard_recompute_commision_form" model="ir.ui.view">
+		<field name="name">wizard.recompute.commision.form</field>
+		<field name="model">wizard.recompute.commissions</field>
+		<field name="arch" type="xml">
+			<form string="Recalculo de Comisiones">
+				<group>
+					<group>
+						<field name="date_from"/>
+                        <field name="user_ids" widget="many2many_tags"/>
+					</group>
+					<group>
+						<field name="date_to"/>
+                        <field name="delete_old" />
+					</group>
+				</group>
+				
+				<footer>
+					<button name="recompute_commissions" string="Recalcular" type="object" class="oe_highlight"/>
+					<button string="Cancelar" class="oe_link" special="cancel" />
+				</footer>
+			</form>
+		</field>
+	</record>
+
+    <record id="action_wizard_recompute_commission" model="ir.actions.act_window">
+        <field name="name">Recalcular Comisiones</field>
+        <field name="res_model">wizard.recompute.commissions</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="wizard_recompute_commision_form"/>
+        <field name="context">{}</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem action="action_wizard_recompute_commission" id="menu_wizard_recompute_commissions" parent="sale.menu_sale_report"/>
+
+
+</odoo>
