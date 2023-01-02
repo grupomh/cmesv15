@@ -8,7 +8,7 @@ class AccountMove(models.Model):
         string='Antiguedad',
         compute =  'compute_date'
     )
-    #payment_date = fields.Date('Fecha de Pago', store=False, compute="_compute_payment_date")
+    # payment_date = fields.Date('Fecha de Pago', store=False, compute="_compute_payment_date")
     #payment_days = fields.Integer('Dias del Pago', store=False, compute="_compute_payment_date")
     invoice_payment_state=fields.Selection('pagos',related='payment_state')
 
