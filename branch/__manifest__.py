@@ -6,7 +6,7 @@
     'category': 'Sales',
     'summary': 'Multiple Branch Management Multi Branch app Multiple Unit multiple Operating unit sales branch Sales Purchase branch Invoicing branch billing Voucher branch warehouse branch Payment branch Accounting Reports for single company Multi Branches multi company',
     "description": """
-       Multiple Unit operation management for single company Multiple Branch management for single company
+       Multiple  Unit operation management for single company Multiple Branch management for single company
       multiple operation for single company branching company in odoo multiple store multiple company in odoo
     Branch for POS Branch for Sales Branch for Purchase Branch for all Branch for Accounting Branch for invoicing Branch for Payment order Branch for point of sales Branch for voucher
     Branch for All Accounting reports Branch Accounting filter Branch for warehouse branch for sale stock branch for location
