@@ -2,8 +2,7 @@
 # Part of Browseinfo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Mass Duplicate Records in Odoo',
-    'version': '13.0.0.2',
-    'author':'BrowseInfo',
+    'version': '15.0.0.2',
     'category': 'Extra Tools',
     'sequence': 15,
     'summary': 'App Duplicate mass orders customer invoice mass duplicate invoice Mass copy Records sales order mass copy vendor bills copy multiple records duplicate records copy records copy data mass copy data all in one duplicate records mass duplicate button for all',
@@ -42,24 +41,18 @@ Allows you to copy multiple records from tree/list view.
 
 
     """,
-    'website': 'https://www.browseinfo.in',
     'depends': ['base'],
     'data': [
         'security/ir.model.access.csv',
         'views/web_duplicate_views.xml',
         ],
-     'web.assets_backend': [
+    'web.assets_backend': [
         'bi_mass_duplicate/static/src/js/list_extend.js'
     ],
-
    
     'css': [],
-    "price": 7.99,
-    "currency": 'EUR',
     'installable': True,
     'auto_install': False,
     'application': True,
-    'live_test_url':'https://youtu.be/f3efeAcK1TE',
     "images":['static/description/Banner.png'],
-    
 }

@@ -3,73 +3,73 @@ odoo.define('bi_mass_duplicate.ListExtend', function (require) {
 var core = require('web.core');
 var BasicController = require('web.BasicController');
 var DataExport = require('web.DataExport');
-var Sidebar = require('web.Sidebar');
 var session = require('web.session');
+const viewUtils = require('web.viewUtils');
+
 var _t = core._t;
 var qweb = core.qweb;
 var ListController = require('web.ListController');
+
 var ListExtend = ListController.include({
 
 	init: function (parent, model, renderer, params) {
 		this._super.apply(this, arguments);
-		this.hasSidebar = params.hasSidebar;
+		this.hasActionMenus = params.hasActionMenus;
+		this.headerButtons = params.headerButtons || [];
 		this.toolbarActions = params.toolbarActions || {};
 		this.editable = params.editable;
 		this.noLeaf = params.noLeaf;
 		this.selectedRecords = []; // there is no selected record by default
 	},
 
-	renderSidebar: function ($node) {
-		var self = this;
-		if (this.hasSidebar && !this.sidebar) {
-			var other = [{
-				label: _t("Export"),
-				callback: this._onExportData.bind(this)
-			}];
-			if (this._onToggleArchiveState){
-				if (this.archiveEnabled) {
-					other.push({
-						label: _t("Archive"),
-						callback: this._onToggleArchiveState.bind(this, true)
-					});
-					other.push({
-						label: _t("Unarchive"),
-						callback: this._onToggleArchiveState.bind(this, false)
-					});
-				}
-			}
-			if (this._onDuplicateRecord){
-				if (this.is_action_enabled('create') && this.is_action_enabled('duplicate')) {
-					other.push({
-						label: _t('Mass Duplicate'),
-						callback: this._onDuplicateRecord.bind(this),
-					});
-				}
-			}
-			if (this._onDeleteSelectedRecords){
-				if (this.is_action_enabled('delete')) {
-					other.push({
-						label: _t('Delete'),
-						callback: this._onDeleteSelectedRecords.bind(this)
-					});
-				}
-			}
-			this.sidebar = new Sidebar(this, {
-				// editable: this.is_action_enabled('edit'),
-				env: {
-					context: this.model.get(this.handle, {raw: true}).getContext(),
-					activeIds: this.getSelectedIds(),
-					model: this.modelName,
-				},
-				actions: _.extend(this.toolbarActions, {other: other}),
-			});
-			return this.sidebar.appendTo($node).then(function() {
-                self._toggleSidebar();
-            });
-		}
-		return Promise.resolve();
-	},
 
+	_getActionMenuItems: function (state) {
+        if (!this.hasActionMenus || !this.selectedRecords.length) {
+            return null;
+        }
+        const props = this._super(...arguments);
+        const otherActionItems = [];
+        if (this.isExportEnable) {
+            otherActionItems.push({
+                description: _t("Export"),
+                callback: () => this._onExportData()
+            });
+        }
+        if (this.archiveEnabled) {
+            otherActionItems.push({
+                description: _t("Archive"),
+                callback: () => {
+                    Dialog.confirm(this, _t("Are you sure that you want to archive all the selected records?"), {
+                        confirm_callback: () => this._toggleArchiveState(true),
+                    });
+                }
+            }, {
+                description: _t("Unarchive"),
+                callback: () => this._toggleArchiveState(false)
+            });
+        }
+		if (this._onDuplicateRecord){
+			if (this.is_action_enabled('create') && this.is_action_enabled('duplicate')) {
+				otherActionItems.push({
+					description: _t("Mass Duplicate"),
+					callback: () => this._onDuplicateRecord()
+				});
+			}
+		}
+        if (this.activeActions.delete) {
+            otherActionItems.push({
+                description: _t("Delete"),
+                callback: () => this._onDeleteSelectedRecords()
+            });
+        }
+        return Object.assign(props, {
+            items: Object.assign({}, this.toolbarActions, { other: otherActionItems }),
+            context: state.getContext(),
+            domain: state.getDomain(),
+            isDomainSelected: this.isDomainSelected,
+        });
+    },
+	// ----------------------------------------------------------------------------------------------------------------------
 	_onDuplicateRecord: function () {
 		var self = this;
 		this.duplicateRecord(this.selectedRecords,self.modelName)
