@@ -49,7 +49,7 @@ Allows you to copy multiple records from tree/list view.
         'views/web_duplicate_views.xml',
         ],
      'web.assets_backend': [
-        '/bi_mass_duplicate/static/src/js/list_extend.js'
+        'bi_mass_duplicate/static/src/js/list_extend.js'
     ],
 
    

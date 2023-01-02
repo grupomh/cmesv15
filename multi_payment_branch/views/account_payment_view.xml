@@ -5,9 +5,9 @@
         <field name="model">customer.multi.payments</field>
         <field name="inherit_id" ref="bi_cs_multiple_payment.cs_multiple_payment_invoice"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='payment_method_id']" position="after">
+            <!-- <xpath expr="//field[@name='payment_method_id']" position="after">
                 <field name="branch_id"/>
-            </xpath>
+            </xpath> -->
         </field>
     </record>
 
