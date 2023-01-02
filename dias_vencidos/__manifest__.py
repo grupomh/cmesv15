@@ -5,7 +5,7 @@
     'license': 'AGPL-3',
     'summary': 'Dias vencidos',
     'description': """
-    Resta de dias donde la factura aun no se ha pagado 
+    Resta de dias donde la factura aun no se ha pagado
     """,
     'author': 'Xetechs',
     'website': 'http://www.xetechs.com',

@@ -23,9 +23,9 @@ class AccountMove(models.Model):
     #                 payment_date = payment_id.payment_date
     #                 payment_days = (rec.invoice_date - payment_id.payment_date)
     #         rec.update({
-    #             'payment_date': payment_date,
-    #             'payment_days': abs(payment_days.days) if payment_days else 0,
-    #         })
+    #              'payment_date': payment_date,
+    #              'payment_days': abs(payment_days.days) if payment_days else 0,
+    #          })
 
 
 
