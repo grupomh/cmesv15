@@ -7,8 +7,8 @@
         <field name="arch" type="xml">
                     <field name="fiscal_position_id" position="after">
                         <field name="dias_vencidos"/>
-                        <field name="payment_date" invisible="1"/>
-                        <field name="payment_days" string="Dias de Pago"/>
+                        <!-- <field name="payment_date" invisible="1"/>
+                        <field name="payment_days" string="Dias de Pago"/> -->
                     </field>
                 </field>
     </record>
@@ -20,8 +20,8 @@
                 <field name="arch" type="xml">
                             <xpath expr="//field[@name='invoice_date_due']" position="after">
                                 <field name="dias_vencidos"/>
-                                <field name="payment_date" invisible="1"/>
-                                <field name="payment_days" string="Dias de Pago"/>
+                                <!-- <field name="payment_date" invisible="1"/>
+                                <field name="payment_days" string="Dias de Pago"/> -->
                             </xpath>
                         </field>
                 </record>

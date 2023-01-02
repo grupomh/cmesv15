@@ -8,24 +8,24 @@ class AccountMove(models.Model):
         string='Antiguedad',
         compute =  'compute_date'
     )
-    payment_date = fields.Date('Fecha de Pago', store=False, compute="_compute_payment_date")
-    payment_days = fields.Integer('Dias del Pago', store=False, compute="_compute_payment_date")
+    #payment_date = fields.Date('Fecha de Pago', store=False, compute="_compute_payment_date")
+    #payment_days = fields.Integer('Dias del Pago', store=False, compute="_compute_payment_date")
     invoice_payment_state=fields.Selection('pagos',related='payment_state')
 
-    @api.depends('invoice_payment_state')
-    def _compute_payment_date(self):
-        for rec in self:
-            payment_date = False
-            payment_days = False
-            if rec.invoice_payment_state == 'paid':
-                payment_id = self.env['account.payment'].search([('invoice_ids', 'in', [rec.id])], order="payment_date desc", limit=1)
-                if payment_id:
-                    payment_date = payment_id.payment_date
-                    payment_days = (rec.invoice_date - payment_id.payment_date)
-            rec.update({
-                'payment_date': payment_date,
-                'payment_days': abs(payment_days.days) if payment_days else 0,
-            })
+    # @api.depends('invoice_payment_state')
+    # def _compute_payment_date(self):
+    #     for rec in self:
+    #         payment_date = False
+    #         payment_days = False
+    #         if rec.invoice_payment_state == 'paid':
+    #             payment_id = self.env['account.payment'].search([('invoice_ids', 'in', [rec.id])], order="payment_date desc", limit=1)
+    #             if payment_id:
+    #                 payment_date = payment_id.payment_date
+    #                 payment_days = (rec.invoice_date - payment_id.payment_date)
+    #         rec.update({
+    #             'payment_date': payment_date,
+    #             'payment_days': abs(payment_days.days) if payment_days else 0,
+    #         })
 
 
 

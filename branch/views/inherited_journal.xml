@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="account_journal_form_view_branch" model="ir.ui.view">
+        <field name="name">account.journal.form.branch</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form" />
+        <field name="arch" type="xml">
+            <field name="company_id" position="after">
+                <field name="branch_id" attrs="{'required': [('company_id', '=', 4), ('type', '=', 'sale')]}"/>
+            </field>
+        </field>
+    </record>
+</odoo>

@@ -109,6 +109,7 @@ operating-Unit Operation for POS,operating-Unit Operation for Sales,operating-Un
         'wizard/inherited_account_payment.xml',
         'views/inherited_product.xml',
         'views/inherited_partner.xml',
+        'views/inherited_journal.xml',
     ],
     'assets': {    
         'web.assets_qweb': [
