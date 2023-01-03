@@ -13,7 +13,7 @@ class CallOfAttention(models.Model):
     def print_report(self):
         return self.env.ref('call_of_attention.action_report_call_of_attention').report_action(self)
 
-    production_id = fields.Many2one('mrp.production', 'Orden de fabricacion', required=False,copy=False,readonly=True)
+    production_id = fields.Many2one('mrp.production', 'Orden de fabricaciones', required=False,copy=False,readonly=True)
     bpm_id = fields.Many2one('registration.bpm', 'Registro BPMs', required=False, copy=False,readonly=True)
     name = fields.Char(string='Order Reference', required=True, copy=False, readonly=True, default=lambda self: _('New'))
     employee_id = fields.Many2one('hr.employee','Empleado',required=True,copy=False,readonly=False,tracking=3)
