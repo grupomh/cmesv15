@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <record id="inherit_view_hr_equipment_view_form" model="ir.ui.view">
+            <field name="name">mrp.equipment.form.inherit</field>
+            <field name="model">maintenance.equipment</field>
+            <field name="inherit_id" ref="maintenance.hr_equipment_view_form"/>
+            <field name="arch" type="xml">
+                <notebook position="inside">
+                    <page name="view_maintenances_util_add_tree" string="Repuestos a utilizar">
+                        <field name="bom_lines" >
+                            <tree string="equipement_maintenances_lines" editable="bottom">
+                                <field name="company_id" invisible="1"/>
+                                <field name="sequence" widget="handle"/>
+                                <field name="product_id" string="Componentes"/>
+                                <field name="product_tmpl_id" invisible="1"/>
+                                <field name="details" />
+                                <field name="maintenance_menor" />
+                                <field name="maintenance_mayor" />
+                                <field name="maintenance_ct" />
+                                <field name="product_qty" string="Cantidad"/>
+                                <field name="product_uom_category_id" invisible="1"/>
+                                <field name="product_uom_id" string="Unidad de medida" options="{'no_open':True,'no_create':True}" /><!--groups="uom.group_uom"-->                                
+                                <field name="cost_component" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                <field name="cost_qty" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                <field name="currency_id" invisible="1"/>
+                            </tree>
+                        </field>
+                        <group name="note_group" col="6">
+                            <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                                <field name="sub_total_mount" widget='monetary' options="{'currency_field': 'currency_id'}" invisible="1"/>
+                                <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                    <label for="total_mount" />
+                                </div>
+                                <field name="total_mount" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                            </group>
+                            <div class="oe_clear"/>
+                        </group>                      
+                    </page>
+                </notebook>
+
+                <div name="button_box" position="inside">
+                    <button name="account_move_mainte_action_open" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('amount_account_maitenance', '=', 0)]}" context="{'search_default_maintenance_equipment_id': active_id}">
+                        <div class="o_stat_info">
+                            <span class="o_form_field o_stat_value">
+                            <field name="currency_id" invisible="1" />
+                             <field name="amount_account_maitenance" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                            </span>
+                            <span class="o_stat_text">Facturas</span>
+                        </div>
+                    </button>
+                </div>
+
+                <div name="button_box" position="inside">
+                    <button name="lines_move_mainte_action_open" type="object" class="oe_stat_button" icon="fa-stack-overflow" attrs="{'invisible': [('amount_repuest_maitenance', '=', 0)]}" context="{'search_default_maintenance_equipment_id': active_id}">
+                        <div class="o_stat_info">
+                            <span class="o_form_field o_stat_value">
+                            <field name="currency_id" invisible="1" />
+                             <field name="amount_repuest_maitenance" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                            </span>
+                            <span class="o_stat_text">Repuestos consumo</span>
+                        </div>
+                    </button>
+                </div>
+
+                <div name="button_box" position="inside">
+                    <button name="lines_workforce_action_open" type="object" class="oe_stat_button" icon="fa-users" attrs="{'invisible': [('amount_repuest_maitenance', '=', 0)]}" context="{'search_default_maintenance_request_id': active_id}">
+                        <div class="o_stat_info">
+                            <span class="o_form_field o_stat_value">
+                             <field name="amount_mrp_wokrforce" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                            </span>
+                            <span class="o_stat_text">Mano de obra</span>
+                        </div>
+                    </button>
+                </div>
+                
+            </field>
+        </record>
+
+    </data>
+</odoo>

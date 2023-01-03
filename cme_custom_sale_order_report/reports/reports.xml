@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <report
+            id="cme_sale_order_report"
+            model="sale.order"
+            string="CME Presupuesto/Pedido"
+            report_type="qweb-pdf"
+            name="cme_custom_sale_order_report.cme_pedido"
+            file="cme_custom_sale_order_report.cme_pedido"
+            print_report_name="(object._get_report_base_filename())"
+            groups="cme_custom_sale_order_report.cme_sale_report_group"
+        />
+
+        <record id="sale_order_cme_format" model="report.paperformat">
+            <field name="name">Pedido CME PDF</field>
+            <field name="default" eval="True"/>
+            <field name="format">Letter</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">0</field>
+            <field name="margin_bottom">64</field>
+            <field name="margin_left">15</field>
+            <field name="margin_right">10</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">40</field>
+            <field name="dpi">90</field>
+            <field name="report_ids" eval="[(4, ref('cme_custom_sale_order_report.cme_sale_order_report'))]"/>
+        </record>
+    </data>
+</odoo>

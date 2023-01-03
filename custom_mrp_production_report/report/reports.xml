@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            id="action_report_custom_production_mrp"
+            model="mrp.production"
+            string="Reporte por parciales"
+            report_type="qweb-pdf"
+            name="custom_mrp_production_report.action_report_custom_mrp_production"
+            file="custom_mrp_production_report.action_report_custom_mrp_production"
+            print_report_name="object.name"
+        />
+    </data>
+</odoo>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+        <!--vista de formulario pago de clientes-->
+        <record id="account_payment_vendedor" model="ir.ui.view">
+            <field name="name">account.payment.vendedor</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+ 		         <xpath expr="//field[@name='journal_id']" position="after">
+
+		              <field name="vendedor_id"  attrs="{'invisible': [('payment_type', 'not in', 'inbound')]}"/>
+                </xpath>
+            </field>
+        </record>
+
+
+		<!-- vista de lista en menú pagos de clientes-->
+ 	      <record id="account_payment_vendedor_tree" model="ir.ui.view">
+            <field name="name">account.payment.vendedor.tree</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_tree"/>
+            <field name="arch" type="xml">
+                   <xpath expr="//field[@name='partner_id']" position="after">
+                      <field name="vendedor_id"/>
+                   </xpath>
+            </field>
+        </record>
+
+
+        <!-- vista de formulario de pago desde las facturas de clientes-->
+        <!--record id="account_payment_vendedor" model="ir.ui.view">
+            <field name="name">account.payment.invoice.vendedor</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_invoice_form"/>
+            <field name="arch" type="xml">
+             <xpath expr="//field[@name='communication']" position="after">
+                  <field name="vendedor_id"/>
+                </xpath>
+            </field>
+        </record-->
+
+        <!-- vista de formulario de pago multiples de facturas de clientes-->
+        <!-- <record id="account_payment_vendedor_multi_invoice" model="ir.ui.view">
+            <field name="name">account.payment.vendedor.multi.invoice</field>
+            <field name="model">account.payment.register</field>
+            <field name="inherit_id" ref="account.view_account_payment_form_multi"/>
+            <field name="arch" type="xml">
+             <xpath expr="//field[@name='payment_date']" position="after">
+                  <field name="vendedor_id"  attrs="{'invisible': [('payment_type', 'not in', 'inbound')]}"/>
+                </xpath>
+            </field>
+        </record> -->
+
+        <!-- vista de formulario de pago multiples de facturas de clientes-->
+        <!-- <record id="account_payment_vendedor_form_multi_payments" model="ir.ui.view">
+          <field name="name">account.payment.vendedor.form.multi.payments</field>
+          <field name="model">customer.multi.payments</field>
+          <field name="inherit_id" ref="bi_cs_multiple_payment.cs_multiple_payment_invoice"/>
+          <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_method_id']" position="after">
+                <field name="vendedor_id"/>
+            </xpath>
+          </field>
+        </record> -->
+
+  </data>
+</odoo>
+
+

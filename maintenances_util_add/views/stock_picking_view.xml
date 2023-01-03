@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="inherit_view_picking_form" model="ir.ui.view">
+            <field name="name">view.picking.form.inherit</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <field name="origin" position="after">
+                    <field name="maintenance_equipment_id" attrs="{'invisible': [['picking_type_id','!=',326]]}" /> <!--el atributo de invisible solo funcionara con Melgees. no funciona para multicompañias-->
+                    <field name="maintenance_request_id" attrs="{'invisible': [['picking_type_id','!=',326]]}"/>
+                   
+                </field>
+                
+            </field>
+        </record>
+    </data>
+</odoo>

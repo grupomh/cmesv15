@@ -1,0 +1,155 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- sale.order inherit form view -->
+        <record id="sale_view_order_form_extend" model="ir.ui.view">
+            <field name="name">sale.view.order.form.extend</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                
+                <button name="action_cancel" position="attributes">
+                    <attribute name="groups">custom_melgees.hidden_action_cancel</attribute>
+                </button>
+                <button name="action_draft" position="attributes">
+                    <attribute name="groups">custom_melgees.hidden_action_cancel</attribute>
+                </button>
+                <field name="partner_id" position="attributes">
+                    <attribute name="options">{'no_quick_create': True}</attribute>
+                </field>
+                <xpath expr="//tree/field[@name='product_id']" position="attributes">
+                    <attribute name="options">{'no_quick_create': True}</attribute>
+                </xpath>
+                <xpath expr="//tree/field[@name='price_unit']" position="replace">
+                    <field name="is_authorize" invisible="1"/>
+                    <field name="price_unit" attrs="{'readonly': [('is_authorize', '=', False)]}"/>
+                </xpath>
+                <group name="sale_shipping" position="replace"/>
+                <xpath expr="//group" position="inside">
+                  <group name="sale_shipping" string="Delivery">
+                        <field name="warehouse_id" options="{'no_create': True}" groups="stock.group_stock_multi_warehouses" force_save="1"/>
+                        <field name="invoice_numbers" invisible = "1"/>
+                        <field name="incoterm" widget="selection" groups="sale_stock.group_display_incoterm"/>
+                        <field name="picking_policy" required="1"/>
+                        <label for="commitment_date" string="Delivery Date"/>
+                        <div class="o_row">
+                            <field name="commitment_date" required="1"/> <span class="text-muted">Expected: <field name="expected_date" widget="date"/></span>
+                        </div>
+                        <field name="effective_date"/>
+                    </group>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="replace">
+                    <field name="user_id" invisible="True"/>
+                </xpath>
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="user_id"/>
+                    <!-- <field name="branch_id" attrs="{'required': [('company_id', '=', 4)], 'invisible': [('company_id', '!=', 4)]}"/> -->
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="sale_view_order_tree_extend" model="ir.ui.view">
+            <field name="name">sale.view.order.tree.extend</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <field name="date_order" position="before">
+                    <field name="invoice_numbers"/>
+                </field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_sale_order_form_inherit">
+            <field name="name">sale.order.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref = "sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="replace">
+                    <field name="partner_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True}" options='{"always_reload": True, "create": False}'/>
+                </field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_purchase_order_form_inherit">
+            <field name="name">purchase.order.form.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref = "purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="replace">
+                    <field name="partner_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'supplier', 'show_vat': True}"
+                                placeholder="Name, TIN, Email, or Reference" options='{"create": False}'
+                            />
+                </field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_account_invoice_form_inherit">
+            <field name="name">account.invoice.form.inherit</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref = "account.view_move_form"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="replace">
+                    <field name="partner_id" widget="res_partner_many2one" nolabel="1"
+                                       context="{
+                                            'res_partner_search_mode': (context.get('default_type', 'entry') in ('out_invoice', 'out_refund', 'out_receipt') and 'customer') or (context.get('default_type', 'entry') in ('in_invoice', 'in_refund', 'in_receipt') and 'supplier') or False,
+                                            'show_address': 1, 'default_is_company': True, 'show_vat': True}"
+                                       options='{"always_reload": True, "no_quick_create": True, "create": False}'
+                                       /> <!--      attrs="{'invisible': [('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))]}" -->
+                </field> 
+            </field>
+        </record>
+
+        <!-- <record id="stock_account.view_template_property_form" model="ir.ui.view">
+            <field name="name">product.template.stock.property.form.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <data>
+                    <field name="list_price" position="after">
+                        <field name="valuation" invisible="1" readonly="1"/>
+                        <field name="cost_method" invisible="1" readonly="1"/>
+                    </field>
+                    <field name="standard_price" position="replace">
+                        <field name="standard_price"
+                            attrs="{'readonly':[('cost_method', '!=', 'fifo')]}"
+                            widget='monetary' options="{'currency_field': 'cost_currency_id', 'field_digits': True}"
+                            class="oe_inline" groups="custom_module.group_access_product"/>
+                    </field>
+                    <xpath expr="//div[@name='standard_price_uom']" position="inside">
+                        <span name="update_cost_price">
+                            <button string="Update Cost" type="action"
+                                name="%(stock_account.action_view_change_standard_price)d"
+                                attrs="{'invisible':['|', ('cost_method', '=', 'fifo'), ('product_variant_count', '>', 1)]}"
+                                class="oe_link pt-0 oe_inline" groups="custom_module.group_access_product"/>
+                        </span>
+                    </xpath>
+                </data>
+            </field>
+        </record> -->
+
+        <record model="ir.ui.view" id="view_product_supplier_form_inherit">
+            <field name="name">product.suplier.form.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref = "purchase.view_product_supplier_inherit"/>
+            <field name="arch" type="xml">
+                <field name="seller_ids" position="replace">
+                    <field name="seller_ids" context="{'default_product_tmpl_id':context.get('product_tmpl_id',active_id), 'product_template_invisible_variant': True}" nolabel="1" attrs="{'invisible': [('product_variant_count','&gt;',1)]}" groups="custom_module.group_access_product"/>
+                    
+                </field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_product_product_form_inherit">
+            <field name="name">product.product.form.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref = "stock.product_form_view_procurement_button"/>
+            <field name="arch" type="xml">
+                <button name="action_update_quantity_on_hand" position="replace">
+                    <button string="Update Quantity" type="object" groups="stock.group_stock_manager,custom_module.group_update_quantity_on_hand" name="action_update_quantity_on_hand" attrs="{'invisible': [('type', '!=', 'product')]}"/>                    
+                </button>
+            </field>
+        </record>
+
+    </data>
+</odoo>

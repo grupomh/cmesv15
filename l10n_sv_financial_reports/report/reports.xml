@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--Formato Libro Diario-->
+    <record id="report_account_move_format" model="report.paperformat">
+        <field name="name">Asiento Contable PDF</field>
+        <field name="default" eval="True"/>
+        <field name="format">Letter</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">40</field>
+        <field name="dpi">110</field>
+    </record>
+
+    <!--Libro Diario-->
+    <record id="action_report_account_move" model="ir.actions.report">
+        <field name="model">account.move</field>
+        <field name="name">Asiento Contable</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">l10n_sv_financial_reports.report_account_move_tmpl</field>
+        <field name="report_file">l10n_sv_financial_reports.report_account_move_tmpl</field>
+        <field name="print_report_name">'Journal Ledger ' + object.name</field>
+        <field name="paperformat_id" ref="l10n_sv_financial_reports.report_account_move_format"/>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+        <field name="attachment_use" eval="False"/>
+    </record>
+
+    <record id="action_report_account_payment_move" model="ir.actions.report">
+        <field name="model">account.payment</field>
+        <field name="name">Asiento Contable (Agrupado)</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">l10n_sv_financial_reports.report_account_payments_move_document</field>
+        <field name="report_file">l10n_sv_financial_reports.report_account_payments_move_document</field>
+        <field name="print_report_name">'Asientos Contables Agrupados'</field>
+        <field name="paperformat_id" ref="l10n_sv_financial_reports.report_account_move_format"/>
+        <!--<field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>-->
+        <field name="attachment_use" eval="False"/>
+    </record>
+</odoo>

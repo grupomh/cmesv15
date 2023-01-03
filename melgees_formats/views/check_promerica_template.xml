@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <template id="check_promerica_template">
+            <t t-call="web.html_container">
+                <t t-call="web.internal_layout">
+                    <style>
+                        [class^="col-"] {padding:0!important;}
+                        div,span{font-size:10px;}
+                        .big {font-size:14px;font-weight:bold;}
+                        .bigger {font-size:14px;font-weight:bold;}
+                        .medium {font-size:11px;font-weight:bold;}
+                    </style>
+                    <t t-foreach="docs" t-as="o">
+                        <div class="page" style="position:relative;padding-bottom:300px;padding-top:10px;">
+                            <div class="row" style="position:relative;padding-left:50px;padding-right:137px">
+                                <div class="col-3" style="text-align:right">
+                                    <span class="big" t-esc="o._format_date(o.payment_date, 'day')"/>
+                                </div>
+                                <div class="col-3" style="text-align:right;padding-right:20px !important;">
+                                    <span class="big" t-esc="o._format_date(o.payment_date, 'month')"/>
+                                </div>
+                                <div class="col-3" style="text-align:right;padding-right:45px !important;">
+                                    <span class="big" t-esc="o._format_date(o.payment_date, 'year')"/>
+                                </div>
+                                <div class="col-3" style="text-align:left">
+                                    <span class="big" t-esc="'***%.2f***'% o.amount"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" style="margin-left:76px;margin-top:10px;">
+                                    <span class="bigger" t-esc="'***{}***'.format(o.partner_id.name)"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" style="margin-left:76px;margin-top:7px;">
+                                    <span class="bigger" t-esc="'***{}***'.format(o._get_num2words(o.amount))"
+                                          style=""/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" style="margin-top:220px;text-align:left;">
+                                    <span class="" t-esc="o.communication" style=""/>
+                                </div>
+                            </div>
+                            <div class="row" style="width:100%;margin-top:79px;padding-right:130px">
+                                <div class="col-12">
+                                    <div class="row" t-foreach="o.move_line_ids" t-as="l" style="margin:27px 0 0 0;">
+                                        <div class="col-2 medium" t-esc="l.account_id.code"/>
+                                        <div class="col-6 medium" t-esc="l.account_id.name"
+                                             style="text-align:left;padding-left:0px"/>
+                                        <div class="col-2 medium" t-esc="l.credit if l.credit != 0 else '-'"
+                                             style="text-align:right;"/>
+                                        <div class="col-2 medium" t-esc="l.debit if l.debit != 0 else '-'"
+                                             style="text-align:right;"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="position:absolute; bottom:0;left:-10px">
+                                <span class="" t-esc="o.create_uid.partner_id.name" style=""/>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<odoo>
+	<data>
+		<record id="view_account_invoice_rouding_form" model="ir.ui.view">
+			<field name="name">account.move.rouding.form</field>
+			<field name="model">account.move</field>
+			<field name="inherit_id" ref="account.view_move_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='price_unit']" position="after">
+                    <field name="apply_rouding" invisible="1"/>
+					<field name="amount_rouding" force_save="1" attrs="{'readonly': [('apply_rouding', '=', False)]}"/>
+				</xpath>
+			</field>
+		</record>
+
+	</data>
+</odoo>

@@ -1,0 +1,28 @@
+# -*- coding: utf-8 -*-
+{
+    "name": "Sales Commission",
+    "author": "J2L Tech GT",
+    "website": "https://j2ltechgt.com",
+    "support": "soporte@j2ltechgt.com",
+    "version": "13.0.1",
+    "category": "Sales",
+    "summary": "Sales Commission",
+    "description": """Sales Commission""",
+    "depends": ['sale_management', 'account', 'base','base_setup'],
+    "data": [
+        'security/commission_security.xml',
+        'security/ir.model.access.csv',
+        'views/res_config.xml',
+        'views/views.xml',
+        'views/sales_commission_analysis.xml',
+        "views/sale_view.xml",
+        "views/invoice_view.xml",
+        "wizard/create_inv_multi_action.xml",
+        "wizard/wizard_recompute_commisions_view.xml",
+        "report/report_sales_commission.xml",
+        "report/sale_analysis_report_view.xml",
+    ],                     
+    "installable": True,
+    "auto_install": False,
+    "application": True,  
+}

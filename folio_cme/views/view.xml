@@ -1,0 +1,37 @@
+<odoo>
+    <data>
+        <!--Account move form-->
+        <record id="view_account_move_folio_form" model="ir.ui.view">
+            <field name="name">view.account.move.folio.form</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='ref']" position="before">
+                    <field name="folio" readonly="1"/>
+                </xpath>
+            </field>
+        </record>
+        <!--Account move tree-->
+        <record id="view_account_move_folio_tree" model="ir.ui.view">
+            <field name="name">view.account.move.folio.tree</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="folio"/>
+                </xpath>
+            </field>
+        </record>
+        <!--Journal-->
+        <record id="view_account_journal_folio_form" model="ir.ui.view">
+            <field name="name">view.account.journal.folio.form</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='currency_id']" position="before">
+                    <field name="code_sequence" string="Código de secuencia"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

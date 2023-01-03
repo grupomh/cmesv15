@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="action_report_slip_custom_nomina_id">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <style>
+                        .table_header {
+                            width:100%;
+                            height: 50px;
+                            table-layout: fixed;
+                            overflow-wrap: break-word;
+                        }
+                        .row-1, .row-2, .row-3, .row-4{
+                            
+                            border-collapse: collapse;
+                            text-align: center;
+                        }
+                        .td_customer {
+                            position: relative;
+                            left: 30px;
+                            width: 40%;
+                            text-indent: 23mm;
+                        }
+                        .img-container {
+                            text-align: center;
+                            vertical-align: middle;
+                            display: block;
+                        }
+                        .container-info {
+                            position: relative;
+                            width:100%;
+                        }
+                        .subcontainer-info {
+                            position:absolute;
+                            left:0px;
+                            width:30%;
+                            height:45px;
+                            text-align: center;
+                            vertical-align: middle;                            
+                            font-size: 10px;
+                        }
+                        .main-table-po{
+                            width:100%;
+                            height: 25px;
+                            font-size: 13px;
+                            
+                        }
+                        .tr-po {
+                            height: 25px;
+                        }
+                        .main-table-po2{
+                            width:100%;
+                            height: 25px;
+                            font-size: 12px;
+                        }
+                        .main-table-po3{
+                            width:100%;
+                            height: 25px;
+                            font-size: 12px;
+                        }
+                        .th-header {
+                            text-align: center;
+                            vertical-align: middle;
+                            border-top:1px solid #000;
+                            border-bottom:1px solid #000;
+                        }
+                        .td-b-b{
+                            text-align: right;
+                            vertical-align: middle;
+                        }
+                        .td-aa, .td-ab {
+                            border-top:1px solid #000;
+                        }
+                        .liquid{
+                            width:20%;
+                        }
+                        .firm{
+                            width:75%;
+                            height: 30px;
+                            text-align: center;
+                        }
+                        .sign_a{
+                            border-bottom:1px solid #000;
+                            width: 200px;
+                            text-align: center;
+                        }
+                        .sign_aa{
+                            text-align: center;
+                        }
+                        .space{
+                            width: 85px;
+                            text-align: center;
+                        }
+                    </style>
+                    <div class="page">
+                        <div>
+                            <table class="table_header">                                
+                                <tr>
+                                    <td class="row-1" rowspan="3">
+                                        <div class="img-container">
+                                            <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="max-height: 75px;" alt="Logo"/>
+                                        </div>
+                                    </td>
+                                   <td class="row-2" rowspan="3">
+                                        <div>
+                                            <center>
+                                                <p>
+                                                    <b>
+                                                        <span t-field="o.company_id.name"/>
+                                                    </b>
+                                                </p>
+                                                <p>
+                                                    <b>
+                                                        COMPROBANTE DE PAGO
+                                                    </b>
+                                                </p>
+                                                <p>
+                                                    <b>
+                                                        Período del 
+                                                    </b>
+                                                    <b>
+                                                        <span t-if="o.date_from" t-field="o.date_from"/>
+                                                    </b>
+                                                    <b>
+                                                        al 
+                                                    </b>
+                                                    <b>
+                                                        <span t-if="o.date_to" t-field="o.date_to"/>
+                                                    </b>
+                                                </p>
+                                            </center>
+                                        </div>
+                                    </td>
+                                    <td class="row-3">
+                                    <strong></strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="row-4" rowspan="2">
+                                        <strong></strong>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="container-info">
+                            <div class="subcontainer-info">
+                                <p>
+                                    <b>NIT: </b>
+                                    <span t-field="o.company_id.vat"/>
+                                </p>
+                                <p>
+                                    <b>
+                                        <span t-if="o.company_id.street" t-field="o.company_id.street"/>
+                                        <span t-if="o.company_id.street2" t-field="o.company_id.street2"/>
+                                    </b>
+                                </p>
+                            </div>
+                        </div>
+                        <br/><br/><br/>
+                        <div>
+                            <table class="main-table-po">
+                                <tbody>
+                                <tr class="tr-po">
+                                    <td class="td-a"><b>Nombre:</b></td>
+                                    <td class="td-b"><span t-field="o.employee_id.name"/></td>
+                                    <td class="td-c"><b>ID:</b></td>
+                                    <td class="td-d"><span t-field="o.employee_id.identification_id"/></td>
+                                </tr>
+                                <tr class="tr-po">
+                                    <td class="td-a"><b>Departamento:</b></td>
+                                    <td class="td-b"><span t-field="o.employee_id.department_id.name"/></td>
+                                    <td class="td-c"><b>Puesto:</b></td>
+                                    <td class="td-d"><span t-field="o.employee_id.job_id.name"/></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <br/>                        
+                        <div>
+                            <table class="main-table-po2">
+                                <thead>
+                                    <th class="th-header">INGRESOS</th>
+                                    <th class="th-header">MONTO</th>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="o.line_ids.filtered(lambda x: x.category_id.code == 'BASIC')" t-as="l">
+                                        <t t-if="l.total != 0">
+                                            <tr class="tr-po">
+                                                <td class="td-b-a"><span t-field="l.name"/></td>
+                                                <td class="td-b-b"><span t-field="l.total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                    <t t-foreach="o.line_ids.filtered(lambda x: x.category_id.code == 'ING')" t-as="l">
+                                        <t t-if="l.total != 0">
+                                            <tr class="tr-po">
+                                                <td class="td-b-a"><span t-field="l.name"/></td>
+                                                <td class="td-b-b"><span t-field="l.total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                    <t t-foreach="o.line_ids.filtered(lambda x: x.category_id.code == 'GROSS')" t-as="l">
+                                        <tr class="tr-po">
+                                            <td class="td-b-a"><span t-field="l.name"/></td>
+                                            <td class="td-b-b"><span t-field="l.total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                        </tr>
+                                    </t>
+                                    <tr class="tr-po">
+                                        <td class="td-aa"/>
+                                        <td class="td-ab"/>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <table class="main-table-po3">
+                                <thead>
+                                    <th class="th-header">DEDUCCIONES</th>
+                                    <th class="th-header">MONTO</th>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="o.line_ids.filtered(lambda x: x.category_id.code == 'DED')" t-as="l">
+                                        <t t-if="l.total != 0">
+                                            <tr class="tr-po">                                            
+                                                <td class="td-b-a"><span t-field="l.name"/></td>
+                                                <td class="td-b-b"><span t-field="l.total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>                                            
+                                            </tr>
+                                        </t>
+                                    </t>
+                                    <tr class="tr-po">
+                                        <td class="td-aa"/>
+                                        <td class="td-ab"/>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <br/>
+                        <div>
+                            <table class="main-table-po2">
+                                <thead>
+                                    <th>Observaciones</th>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="o.line_ids.filtered(lambda x: x.salary_rule_id.code == 'CTD')" t-as="l">
+                                        <t t-if="l.total != 0">
+                                            <tr class="tr-po">
+                                                <td class="td-b-a"><span t-field="l.name"/></td>
+                                                <td class="td-b-b"><span t-field="l.total"/></td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                    <t t-foreach="o.line_ids.filtered(lambda x: x.salary_rule_id.code == 'CTN')" t-as="l">
+                                        <t t-if="l.total != 0">
+                                            <tr class="tr-po">
+                                                <td class="td-b-a"><span t-field="l.name"/></td>
+                                                <td class="td-b-b"><span t-field="l.total"/></td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                    <tr class="tr-po">
+                                        <td class="td-aa"/>
+                                        <td class="td-ab"/>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <br/>
+                        <div>
+                            <table class="main-table-po">
+                                <tbody>
+                                <tr class="tr-po">
+                                    <td class="td-a"></td>
+                                    <td class="td-b"><b>Pago correspondiente </b><b t-field="o.payslip_run_id"/></td>
+                                    <td class="liquid">
+                                        <t t-foreach="o.line_ids.filtered(lambda x: x.category_id.code == 'NET')" t-as="l">
+                                            <t t-if="l.total != 0">                                          
+                                                <td class="td-c"><span t-field="l.name"/><b>: </b></td>
+                                                <td class="td-d"><span t-field="l.total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>                                            
+                                            </t>
+                                        </t>
+                                    </td>
+                                </tr>                            
+                                </tbody>
+                            </table>
+                        </div>
+                        <br/><br/><br/><br/>
+                        <div>
+                            <table class="firm">
+                                <div>
+                                <center>
+                                    <tbody>
+                                        
+                                        <tr>
+                                            <td class="space"/>
+                                            <td class="space"/>
+                                            <td class="space"/>
+                                            <td class="sign_a"/>
+                                            <td class="space"/>
+                                        </tr>
+                                        <tr>
+                                            <td class="space"/>
+                                            <td class="space"/>
+                                            <td class="space"/>
+                                            <td class="sign_aa">Recibí Conforme</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="space"/>
+                                            <td class="space"/>
+                                            <td class="space"/>
+                                            <td>
+                                                <span t-if="o.date_from" t-field="o.employee_id.name"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="space"/>
+                                            <td class="space"/>
+                                            <td class="space"/>
+                                            <td>
+                                                <span t-if="o.date_from" t-field="o.employee_id.identification_id"/>
+                                            </td>
+                                        </tr>
+                                        
+                                    </tbody>
+                                </center>
+                                </div>                                
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record id="view_call_of_attention_tree" model="ir.ui.view">
+      <field name="name">view.call.of.attention.tree</field>
+      <field name="model">call.of.attention</field>
+      <field eval="100" name="priority"/>
+      <field name="arch" type="xml">
+        <tree string="Llamados de atencion lista" create="true" edit="true" import="true">
+          <field name="name"/>
+          <field name="production_id" />
+          <field name="bpm_id" />
+          <field name="employee_id"/>
+          <field name="date"/>
+          <field name="area"/>
+          <field name="create_uid" string="Creado por"/>
+          <field name="firm" string="Firmado" />
+        </tree>
+      </field>
+    </record>
+
+    <record id="view_call_of_attention_form" model="ir.ui.view">
+      <field name="name">view.call.of.attention.form</field>
+      <field name="model">call.of.attention</field>
+      <field eval="100" name="priority"/>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+            <button name="print_report" type="object" string="IMPRIMIR" class="oe_highlight" attrs="{'invisible': ['|',('name', '=', 'Nuevo'),('firm', '=', True)]}"/>
+          </header>
+          <sheet>
+          <div class="oe_title">
+            <h1>
+              <field name="name" readonly="1"/>
+            </h1>
+          </div>
+          <group>
+              <!--izquierdo-->
+              <group>
+                <field name="production_id" attrs="{'invisible': [('production_id', '=', False)], 'readonly': [('firm', '=', True)]}" readonly="1"/>
+                <field name="bpm_id" attrs="{'invisible': [('bpm_id', '=', False)], 'readonly': [('firm', '=', True)]}" readonly="1"/>
+                <field name="date" attrs="{'readonly': [('firm', '=', True)]}"/>
+                <field name="employee_id" attrs="{'readonly': [('firm', '=', True)]}"/>
+                <field name="area" attrs="{'readonly': [('firm', '=', True)]}"/>                
+                <field name="type_bpm" attrs="{'readonly': [('firm', '=', True)]}"/>
+                <field name="type_ino" attrs="{'readonly': [('firm', '=', True)]}"/>
+                <field name="type_calidad" attrs="{'readonly': [('firm', '=', True)]}"/>
+                <field name="type_mante" attrs="{'readonly': [('firm', '=', True)]}"/>
+                <field name="type_comp" attrs="{'readonly': [('firm', '=', True)]}"/>
+                <field name="type_otr" attrs="{'readonly': [('firm', '=', True)]}"/>
+                
+                <field name="bpm_selec" attrs="{'invisible': [('type_bpm', '=', False)] , 'readonly': [('firm', '=', True)]}"  />
+                <field name="ino_selec" attrs="{'invisible': [('type_ino', '=', False)], 'readonly': [('firm', '=', True)]}" />
+                <field name="cali_selec" attrs="{'invisible': [('type_calidad', '=', False)], 'readonly': [('firm', '=', True)]}" />
+                <field name="mante_selec" attrs="{'invisible': [('type_mante', '=', False)], 'readonly': [('firm', '=', True)]}" />
+                <field name="comp_selec" attrs="{'invisible': [('type_comp', '=', False)], 'readonly': [('firm', '=', True)]}" />
+              </group>
+              <!--derecho-->
+              <group>
+                <field name="description" attrs="{'readonly': [('firm', '=', True)]}"/>
+                <field name="company_id" invisible="1"/>
+                <field name="create_uid" string="Creado por"/>
+                <field name="create_date" string="Creado el" invisible="1"/>
+                <H3>__ </H3>
+                
+                <field name="firm" string="¿Firmo el aviso de no conformidad?" confirm="Al confirmar la firma no podra volver imprimir" groups="call_of_attention.group_call_of_attention_manager"/>
+                
+              </group>
+              
+            </group>
+          </sheet>
+          <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers"/>
+            <field name="activity_ids" widget="mail_activity"/>
+            <field name="message_ids" widget="mail_thread"/>
+          </div>
+        </form>
+      </field>
+    </record>
+    <!--SEARCH Y FILTER-->
+    <record id="view_call_of_attention_search" model="ir.ui.view">
+      <field name="name">view.call.of.attention.search</field>
+      <field name="model">call.of.attention</field>
+      <field name="arch" type="xml">
+        <search string="Busqueda llamados de atencion">
+          <field name="employee_id" string="Empleado"/>
+          <field name="name" string="Referencia"/>
+          <field name="production_id" string="MO. referencia"/>
+          <separator/>
+          <filter name="filter_state1" string="Firmado" domain="[('firm', '=', 'True')]" context="{}" />
+          <separator/>
+          <filter name="filter_today" string="Hoy" domain="[('date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+          <separator/>
+          <group name="group_by_custom_modules" string="Group by">
+            <filter name="group_by_date" string="Por Fecha" context="{'group_by': 'date'}" />
+            <filter name="group_by_firm" string="Firmados" context="{'group_by': 'firm'}" />
+            <filter name="group_by_area" string="Areas" context="{'group_by': 'area'}" />
+            <filter name="group_by_create_by" string="Por creador" context="{'group_by': 'create_uid'}" />
+          </group>
+        </search>
+      </field>
+    </record>
+
+    <!-- MENU -->
+    <record id="action_call_of_attention" model="ir.actions.act_window">
+      <field name="name">Llamado de atencion</field>
+      <field name="res_model">call.of.attention</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="view_call_of_attention_tree"/>
+      <field name="context">{}</field>
+      <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+                Crear nuevos registro en llamados de atencion
+        </p>
+      </field>
+    </record>
+    <!-- <menuitem name="llamados de atencion" 
+    id="menu_root_call_of_attention" 
+    web_icon="settlement_fact,static/description/icon.png" 
+    sequence="5"/> -->
+
+    <!-- <menuitem id="submenu_call_of_attention_1" 
+    name="Lllamados de atencion" 
+    parent="menu_root_call_of_attention" 
+    action="action_call_of_attention" 
+    sequence="1"/> -->
+
+  </data>
+</odoo>

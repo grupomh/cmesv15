@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="inherit_hr_contract_view_form" model="ir.ui.view">
+            <field name="name">hr.contract.view.form.inherit</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="arch" type="xml">
+                <group name="salary_info" position="after">
+                    <group name="contract_discounts" string="Descuentos mensuales">
+                        <field name="parking"/>                      
+                        <field name="date_parking_end" />
+                        <field name="rent" />                        
+                        <field name="date_rent_end" />
+                        <field name="insured" />                        
+                        <field name="date_insured_end" />
+                        <field name="telephony" />                        
+                        <field name="date_telephony_end" />
+                        <field name="other_desc" />                        
+                        <field name="date_other_desc_end" />                        
+                    </group>
+                    <group name="other_wage_group" string="Otros salarios">
+                        <field name="other_wage" />
+                    </group>
+                    <group name="comment_discounts" string="Comentarios">
+                        <field name="comment_desc" nolabel="1"/>
+                    </group>
+                </group>
+            </field>
+        </record>
+    </data>
+</odoo>

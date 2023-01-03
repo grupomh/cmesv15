@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_purchase_book">
+        <t t-call="web.html_container">
+            <t t-call="report_ventas_compras.external_layout_ab">
+                <div class="page">
+                    <style type="text/css">
+                        .table-x thead th {
+                        border: 1px solid #dee2e6;
+                        padding-top: 0px;
+                        padding-bottom: 0px;
+                        font-size:16px;
+                        }
+                        .table-x tbody td {
+                        font-size: 11px;border-right:
+                        1px solid #dee2e6;
+                        border-right:1px solid #dee2e6 !important;
+                        border-left:1px solid #dee2e6 !important;
+                        border-top:0 !important;
+                        border-bottom:0 !important;
+                        padding-top: 2px;
+                        padding-bottom: 1px;
+                        }
+                        .table-x tbody tr {
+                        border: 0 !important
+                        }
+                        .table-x tbody td.total {
+                        border-top: 1px solid #dee2e6 !important;
+                        border-right: none !important;
+                        border-left: none !important;
+                        font-size: 14px;
+                        font-weight:bold;
+                        }
+                        .border-x {
+                        padding-left: 10px;
+                        padding-right: 10px;
+                        }
+                    </style>
+                    <t t-value="ultima" t-set="final"/>
+                    <t t-set="sum_exentas_internas" t-value="0.0"/>
+                    <t t-set="sum_exentas_importación" t-value="0.0"/>
+                    <t t-set="sum_gravadas_internas" t-value="0.0"/>
+                    <t t-set="sum_gravadas_importacion" t-value="0.0"/>
+                    <t t-set="sum_iva" t-value="0.0"/>
+                    <t t-set="sum_subtotal" t-value="0.0"/>
+                    <t t-set="sum_retencion" t-value="0.0"/>
+                    <t t-set="sum_retencion_terceros" t-value="0.0"/>
+                    <t t-foreach="data" t-as="folio">
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <h4 t-esc="company_id.name"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <h4>Libro de Compras</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h6 t-esc="'CONTRIBUYENTE {}'.format(company_id.name)"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2 text-center">
+                                <h6 t-esc="'NRC {}'.format(company_id.company_registry)"/>
+                            </div>
+                            <div class="col-2 text-center">
+                                <h6 t-esc="'NIT {}'.format(company_id.vat)"/>
+                            </div>
+                            <div class="col-2">
+                                <h6 t-esc="'MES {}'.format(month)"/>
+                            </div>
+                            <div class="col-2">
+                                <h6 t-esc="'AÑO {}'.format(year)"/>
+                            </div>
+                        </div>
+                        <table class="text-center table table-condensed table-x">
+                            <thead>
+                                <tr>
+                                    <th class="title-border-x" rowspan="2">No.</th>
+                                    <th class="title-border-x" rowspan="2">Emisión
+                                    </th>
+                                    <th class="title-border-x" rowspan="2">NRC</th>
+                                    <th class="title-border-x" rowspan="2">Proveedor</th>
+                                    <th class="title-border-x" rowspan="2">Número</th>
+                                    <th class="title-border-x" rowspan="2">Resolución</th>
+                                    <th class="title-border-x" rowspan="2">Serie</th>
+                                    <th class="title-border-x" rowspan="2">Exentas<br/>Internas
+                                    </th>
+                                    <th class="title-border-x" rowspan="2">Exentas<br/>Importación
+                                    </th>
+                                    <th class="title-border-x" rowspan="2">Gravadas<br/>Internas
+                                    </th>
+                                    <th class="title-border-x" rowspan="2">Gravadas<br/>Importación
+                                    </th>
+                                    <th class="title-border-x" rowspan="2">Crédito<br/>Fiscal
+                                    </th>
+                                    <th class="title-border-x" rowspan="2" style="width:5%">Ret. 1%</th>
+                                    <th class="title-border-x" rowspan="2" style="width:6%">Total</th>
+                                    <th class="title-border-x" rowspan="2" style="width:5%">Retención<br/>Terceros
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="folio[1]" t-as="line">
+                                    <td class="border-x">
+                                        <span t-esc="line.get('no', '')"/>
+                                    </td>
+                                    <td class="border-x">
+                                        <span t-esc="line.get('fecha', '')"/>
+                                    </td>
+                                    <td class="border-x">
+                                        <span t-esc="line.get('nrc_cliente', '')"/>
+                                    </td>
+                                    <td class="border-x text-left">
+                                        <span t-esc="line.get('cliente', '')"/>
+                                    </td>
+                                    <td class="border-x">
+                                        <span t-esc="line.get('fac_no', '')"/>
+                                    </td>
+                                    <td class="border-x">
+                                        <span t-esc="line.get('numero', '')"/>
+                                    </td>
+                                    <td class="border-x">
+                                        <span t-esc="line.get('serie', '')"/>
+                                    </td>
+                                    <td class="border-x text-right">
+                                        <span t-esc="format_price2(line.get('bienes_exentos', 0)+line.get('servicios_exentos', 0), company_id.currency_id)"/>
+                                    </td>
+                                    <td class="border-x text-right">
+                                        <span t-esc="format_price2(line.get('bienes_i_exentos', 0) + line.get('servicios_i_exentos', 0), company_id.currency_id)"/>
+                                    </td>
+                                    <td class="border-x text-right">
+                                        <span t-esc="format_price2(line.get('bienes_gravados', 0)+line.get('servicios_gravados', 0), company_id.currency_id)"/>
+                                    </td>
+                                    <td class="border-x text-right">
+                                        <span t-esc="format_price2(line.get('bienes_i_gravados', 0) + line.get('servicios_i_gravados', 0), company_id.currency_id)"/>
+                                    </td>
+                                    <td class="border-x text-right">
+                                        <span t-esc="format_price2(line.get('iva', ''), company_id.currency_id)"/>
+                                    </td>
+                                    <td class="border-x text-right">
+                                        <span t-esc="format_price2(line.get('retencion', ''))"/>
+                                    </td>
+                                    <td class="border-x text-right">
+                                        <span t-esc="format_price2(line.get('subtotal', ''), company_id.currency_id)"/>
+                                    </td>
+                                    <td class="border-x text-right">
+                                        <span t-esc="format_price2(line.get('retencion_terceros', ''), company_id.currency_id)"/>
+                                    </td>
+                                    <t t-set="sum_exentas_internas"
+                                       t-value="sum_exentas_internas+line.get('bienes_exentos', 0.0)+line.get('servicios_exentos', 0.0)"/>
+                                    <t t-set="sum_exentas_importación"
+                                       t-value="sum_exentas_importación+line.get('bienes_i_exentos', 0.0)+line.get('servicios_i_exentos', 0.0)"/>
+                                    <t t-set="sum_gravadas_internas"
+                                       t-value="sum_gravadas_internas+line.get('bienes_gravados', 0.0)+line.get('servicios_gravados', 0.0)"/>
+                                    <t t-set="sum_gravadas_importacion"
+                                       t-value="sum_gravadas_importacion+line.get('bienes_i_gravados', 0.0)+line.get('servicios_i_gravados', 0.0)"/>
+                                    <t t-set="sum_iva" t-value="sum_iva+line.get('iva', 0.0)"/>
+                                    <t t-set="sum_subtotal" t-value="sum_subtotal+line.get('subtotal', 0.0)"/>
+                                    <t t-set="sum_retencion" t-value="sum_retencion+line.get('retencion', 0.0)"/>
+                                    <t t-set="sum_retencion_terceros"
+                                       t-value="sum_retencion_terceros+line.get('retencion_terceros', 0.0)"/>
+                                </tr>
+                                <tr t-if="len(data) == folio[0]">
+                                    <td class="border-x total"></td>
+                                    <td class="border-x total"></td>
+                                    <td class="border-x total"></td>
+                                    <td class="border-x total"></td>
+                                    <td class="border-x total"></td>
+                                    <td class="border-x total"></td>
+                                    <td class="border-x total"></td>
+                                    <td class="border-x text-right total">
+                                        <span t-esc="format_price2(sum_exentas_internas, company_id.currency_id)"/>
+                                    </td>
+                                    <td class="border-x text-right total">
+                                        <span t-esc="format_price2(sum_exentas_importación, company_id.currency_id)"/>
+                                    </td>
+                                    <td class="border-x total">
+                                        <span t-esc="format_price2(sum_gravadas_internas, company_id.currency_id)"/>
+                                    </td>
+                                    <td class="border-x text-right total">
+                                        <span t-esc="format_price2(sum_gravadas_importacion, company_id.currency_id)"/>
+                                    </td>
+                                    <td class="border-x text-right total">
+                                        <span t-esc="format_price2(sum_iva, company_id.currency_id)"/>
+                                    </td>
+                                    <td class="border-x text-right total">
+                                        <span t-esc="format_price2(sum_retencion)"/>
+                                    </td>
+                                    <td class="border-x text-right total">
+                                        <span t-esc="format_price2(sum_subtotal, company_id.currency_id)"/>
+                                    </td>
+                                    <td class="border-x text-right total">
+                                        <span t-esc="format_price2(sum_retencion_terceros)"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="text-right">
+                            <t t-if="len(folio[1]) &lt; rows_per_page">
+                                <div t-foreach="range(1, rows_per_page-len(folio[1]))" t-as="i"
+                                     style="min-height:20px; width:100%"/>
+                            </t>
+                            <span t-esc="'Pág. {} de {}'.format(folio[0], len(data))"/>
+                        </div>
+                         <t t-if="folio[0] != len(data)">
+                            <div style="page-break-after: always;"/>
+                        </t>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_ventas_compras.external_layout_ab">
+        <!-- Multicompany -->
+        <t t-if="not o and doc">
+            <t t-set="o" t-value="doc"/>
+        </t>
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id"/>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company"/>
+        </t>
+
+        <t t-raw="0"/>
+
+        <div class="header">
+
+        </div>
+        <div class="article">
+            <t t-raw="0"/>
+        </div>
+
+        <div class="footer">
+        </div>
+    </template>
+
+</odoo>

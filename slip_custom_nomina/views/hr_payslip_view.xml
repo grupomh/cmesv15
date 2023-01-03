@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="inherit_view_hr_payslip_form" model="ir.ui.view">
+            <field name="name">hr.payslip.view.form.inherit</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+            <field name="arch" type="xml">
+                <button name="action_print_payslip" position="after">                
+                    <button name="action_send_payslip" type="object" class="oe_highlight" string="Enviar" attrs="{'invisible': [('state', 'in', ('draft'))]}"/>
+                </button>
+                <field name="struct_id" position="after">
+                    <field name="send_mail_boleta" />
+                </field>
+            </field>
+        </record>
+
+        <record id="inherit_view_hr_payslip_tree" model="ir.ui.view">
+            <field name="name">hr.payslip.view.tree.inherit</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_tree"/>
+            <field name="arch" type="xml">
+                <field name="state" position="after">
+                    <field name="send_mail_boleta" string="Enviado"/>
+                </field>
+            </field>
+        </record>
+
+
+        <record id="ir_actions_send_boleta_email" model="ir.actions.server">
+            <field name="name">Enviar Boletas</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="model_hr_payslip"/>
+            <field name="state">code</field>
+            <field name="code">                
+                for ticket in records:
+                    ticket.action_send_payslip()
+            </field>
+            <field name="binding_model_id" ref="hr_payroll.model_hr_payslip"/>
+            <field name="binding_view_types">list</field>
+        </record>
+    </data>
+</odoo>

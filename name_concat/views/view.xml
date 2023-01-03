@@ -1,0 +1,17 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="field_invoice_sv">
+            <field name="name">field.invoice.sv</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <field name = 'currency_id' position="after">                      
+                    <field name="name_concat" invisible = "1"/>  
+                </field>
+                <field name = 'ref' position="after">                      
+                    <field name="force_name"/>  
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>
