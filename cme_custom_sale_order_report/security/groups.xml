@@ -1,5 +1,0 @@
-<odoo>
-    <record id="cme_sale_report_group" model="res.groups">
-        <field name="name">CME custom Sale Report</field>
-    </record>
-</odoo>

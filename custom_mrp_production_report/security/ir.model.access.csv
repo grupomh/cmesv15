@@ -1,3 +1,0 @@
-﻿id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_custom_mrp_production_report,access.custom.mrp.production.report,model_custom_mrp_production_report,custom_mrp_production_report.group_check_tandas_user,0,0,0,0
-access_custom_mrp_production_report_manager,access.custom.mrp.production.report.manager,model_custom_mrp_production_report,custom_mrp_production_report.group_check_tandas_manager,1,1,1,1
