@@ -43,12 +43,10 @@
         'sale_stock',
         'stock_account',
         'partner_credit_limit',
-        'mail',
         ],
     'data': [
 	'views/sale_config_view.xml',
     'views/sale_order_view.xml',
-    'data/mail_template_one.xml'
 ],
     'demo': [],
     'js': [],

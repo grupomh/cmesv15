@@ -26,8 +26,7 @@ class sale_order(models.Model):
     def action_confirm(self):
         so_double_validation_amount=self.env['ir.config_parameter'].sudo().get_param('sale_approve.so_double_validation_amount')
         so_order_approval = self.env['ir.config_parameter'].sudo().get_param('sale_approve.so_order_approval')
-        self.validate_limit_credit()    
-        self.action_send_aprobe()
+        self.validate_limit_credit()
         
         if so_order_approval == "True"  and self.amount_total > float(so_double_validation_amount) :
             self.write({'state': 'to approve'})
@@ -45,15 +44,14 @@ class sale_order(models.Model):
             'state': 'sale',
             'date_order': fields.Datetime.now()
         })
-        self._action_confirm()        
+        self._action_confirm()
         if self.env['ir.config_parameter'].sudo().get_param('sale.auto_done_setting'):
-            self.action_done()        
+            self.action_done()
         return True
 
 
     
     def button_toapprove(self):
-        self.action_send_aprobe_two()
         if self._get_forbidden_state_confirm() & set(self.mapped('state')):
             raise UserError(_(
                 'It is not allowed to confirm an order in the following states: %s'
@@ -67,7 +65,7 @@ class sale_order(models.Model):
         })
         self._action_confirm()
         if self.env['ir.config_parameter'].sudo().get_param('sale.auto_done_setting'):
-            self.action_done()        
+            self.action_done()
         return True
 
 
@@ -87,27 +85,6 @@ class sale_order(models.Model):
         elif 'state' in init_values and self.state == 'sent':
             return 'sale.mt_order_sent'
         return super(SaleOrder, self)._track_subtype(init_values)
-
-
-    def action_send_aprobe(self):   #Accion para enviar correo cuando se confirma
-        for rec in self:
-            ctx = {}
-            email_list = rec.partner_id.user_id.employee_id.parent_id.work_email
-            if email_list:
-                ctx['email_to'] = email_list
-                ctx['send_email'] = True
-                template = self.env.ref('sale_approve.email_send_approve')
-                template.with_context(ctx).send_mail(self.id, force_send=True, raise_exception=False)
-
-    def action_send_aprobe_two(self):   #Accion para enviar correo cuando se aprueba
-        for rec in self:
-            ctx = {}
-            email_list = rec.partner_id.user_id.employee_id.parent_id.work_email
-            if email_list:
-                ctx['email_to'] = email_list
-                ctx['send_email'] = True
-                template = self.env.ref('sale_approve.email_send_approve_two')
-                template.with_context(ctx).send_mail(self.id, force_send=True, raise_exception=False)
 
 
 class SaleConfiguration(models.TransientModel):
@@ -154,6 +131,8 @@ class SaleOrderLine(models.Model):
 SaleOrderLine()
 
    
+
+
 
 
 
