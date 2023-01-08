@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo> 
+    <data>
+
+        <!-- Sequences for registration.bpm -->
+        <record id="seq_registration_bpm" model="ir.sequence">
+            <field name="name">Registros bpm secuencia</field>
+            <field name="code">registration.bpm</field>
+            <field name="prefix">RBM/</field> <!--registration bpm-->
+            <field name="padding">6</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

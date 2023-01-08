@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_fel_format_document">
+            <t t-call="web.basic_layout">
+                <t t-set="o" t-value="o.with_context(lang=lang)"/>
+                <div class="header"/>
+                <div class="page">
+                    <style>
+                        * {
+                            font-size: 10px;
+                        }
+                        hr {
+                            border-top: 2px solid gray;
+                        }
+                        th {
+                            font-size:13px;
+                        }
+                        td {
+                            font-size:11px;
+                        }
+                    </style>
+                    <div class="row justify-content-center">
+                        <div class="col-12 text-center" style="font-size: 18px;">
+                            <t t-if="o.move_type in ['out_invoice', 'in_invoice']">
+                                FACTURA
+                                <t t-if="o.journal_id.is_factura_especial">
+                                    ESPECIAL
+                                </t>
+                            </t>
+                            <t t-if="o.move_type in ['out_refund', 'in_refund'] and o.journal_id.is_nota_abono">
+                                NOTA DE ABONO
+                            </t>
+                            <t t-if="o.move_type in ['out_refund', 'in_refund'] and not o.journal_id.is_nota_abono">
+                                NOTA DE CRÉDITO
+                            </t>
+                        </div>
+                    </div>
+                    <div class="row justify-content-between">
+                        <div class="col-6 text-left" align="center">
+                            <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="max-height: 90px;" alt="Logo"/>
+                            <ul style="list-style-type: none; font-size:12px; padding-left:0px !important;">
+                                <li><span t-field="o.company_id.company_registry"/> </li>
+                                <li><span t-field="o.company_id.name"/></li>
+                                <li>NIT <span t-field="o.company_id.vat"/></li>
+                                <li><span t-field="o.company_id.street"/> <span t-field="o.company_id.state_id.name"/>, <span t-field="o.company_id.country_id.name"/> </li>
+                                <li>PBX:<span t-field="o.company_id.phone"/></li>
+                            </ul>
+                        </div>
+                        <div class="col-1"/>
+
+                        <div class="col-5 text-right" align="center">
+                            <img class="img" src="/account_invoice_megaprint/static/src/img/fel.PNG" style="max-height: 45px;"/>
+                            <ul style="list-style-type: none; font-size:12px;">
+                                <li>DOCUMENTO TRIBUTARIO ELECTRONICO</li>
+                                <li><b>Serie: </b><span t-field="o.fel_serie"/></li>
+                                <li><b>No: </b><span t-field="o.fel_no"/></li>
+                                <li><b>Fecha Emisión: </b><span t-field="o.fel_date"/></li>
+                                <li><b>Fecha Certificación: </b><span t-field="o.fel_date"/></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row mb-4">
+                        <div class="col-10 justify-content-center">
+                            <table width="80%" style="font-size:15; padding-left:10%;">
+                                <tr>
+                                    <td style="font-size:15;"><b>Nombre:</b> <t t-raw="o.partner_id.name"/></td>
+                                    <td style="font-size:15;"><b>Nit:</b> <t t-raw="o.partner_id.vat"/> </td>
+                                </tr>
+                                <tr>
+                                    <td style="color:white;">1</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size:15;"><b>Dirección:</b> <t t-raw="o.partner_id.street"/> </td>
+                                    <td style="font-size:15;">
+                                        <b>
+                                            <t t-if="o.move_type in ['out_invoice', 'in_invoice']">
+                                                Referencia:
+                                            </t>
+                                             <t t-if="o.move_type in ['out_refund', 'in_refund']">
+                                                Documento Origen:
+                                            </t>
+
+                                        </b>
+                                        <t t-raw="o.name"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-12" style="height: 440px;">
+                        <table width="100%" style="border-spacing: 3px; border-collapse: inherit;">
+                            <thead style="background-color: lightgrey;">
+                                <tr>
+                                    <th width="10%" class="text-center" style="border: 1px solid black">CANTIDAD</th>
+                                    <th width="10%" class="text-center" style="border: 1px solid black">TIPO</th>
+                                    <th width="40%" class="text-center" style="border: 1px solid black">DESCRIPCIÓN</th>
+                                    <th width="10%" class="text-center" style="border: 1px solid black">UDM</th>
+                                    <th width="10%" class="text-center" style="border: 1px solid black">PRECIO UNITARIO</th>
+                                    <th width="10%" class="text-center" style="border: 1px solid black">DESCUENTOS</th>
+                                    <th width="10%" class="text-center" style="border: 1px solid black">IMPUESTOS</th>
+                                    <th width="10%" class="text-center" style="border: 1px solid black">TOTAL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                 <t t-set="current_subtotal" t-value="0"/>
+                                <t t-set="lines" t-value="o.invoice_line_ids.sorted(key=lambda l: (-l.sequence, l.date, l.move_name, -l.id), reverse=True)"/>
+                                <t t-set="peso_total" t-value="0"/>
+                                <t t-set="i" t-value="1"/>
+                                <t t-set="total_lineas_fe" t-value="0"/>
+                                <t t-foreach="lines" t-as="line">
+                                    <tr>
+                                        <td class="text-center"><span t-field="line.quantity"/></td>
+                                        <td class="text-center">
+                                            <t t-if="line.product_id.type == 'service'">
+                                                S
+                                            </t>
+                                            <t t-if="line.product_id.type == 'consu'">
+                                                B
+                                            </t>
+                                            <t t-if="line.product_id.type == 'product'">
+                                                B
+                                            </t>
+                                        </td>
+                                        <t t-set="i" t-value="i+1"/>
+                                        <td class="text-left"><span t-field="line.name"/></td>
+                                        <td class="text-center"><span t-field="line.product_uom_id.name"/></td>
+                                        <td class="text-center"><span t-field="line.price_unit"/></td>
+                                        <td class="text-center"><span t-field="line.discount"/> </td>
+                                        <t t-set="taxes" t-value="round(line.price_total - line.price_subtotal, 2)"/>
+                                        <td class="text-center">
+                                            <t t-if="o.journal_id.is_factura_especial == False">
+                                                <t t-raw="taxes"/>
+                                            </t>
+                                            <t t-elif="o.journal_id.is_factura_especial">
+                                                <span t-field="line.no_fe_taxes"/>
+                                            </t>
+                                        </td>
+                                        <td class="text-right">
+                                            <t t-if="o.journal_id.is_factura_especial == False">
+                                                <span t-field="line.price_total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                                            </t>
+                                            <t t-elif="o.journal_id.is_factura_especial">
+                                                <span t-esc="line.price_subtotal + line.no_fe_taxes" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                                                <t t-set="total_lineas_fe" t-value="total_lineas_fe + line.price_subtotal + line.no_fe_taxes"/>
+                                            </t>
+
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                 <t t-if="i&gt;15">
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <br/>
+                       <div class="row justify-content-between">
+                        <div class="col-6 text-left" align="center">
+                            <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="max-height: 90px;" alt="Logo"/>
+                            <ul style="list-style-type: none; font-size:12px; padding-left:0px !important;">
+                                <li><span t-field="o.company_id.company_registry"/> </li>
+                                <li><span t-field="o.company_id.name"/></li>
+                                <li>NIT <span t-field="o.company_id.vat"/></li>
+                                <li><span t-field="o.company_id.street"/> <span t-field="o.company_id.state_id.name"/>, <span t-field="o.company_id.country_id.name"/> </li>
+                                <li>PBX:<span t-field="o.company_id.phone"/></li>
+                            </ul>
+                        </div>
+                        <div class="col-1"/>
+
+                        <div class="col-5 text-right" align="center">
+                            <img class="img" src="/account_invoice_megaprint/static/src/img/fel.PNG" style="max-height: 45px;"/>
+                            <ul style="list-style-type: none; font-size:12px;">
+                                <li>DOCUMENTO TRIBUTARIO ELECTRONICO</li>
+                                <li><b>Serie: </b><span t-field="o.fel_serie"/></li>
+                                <li><b>No: </b><span t-field="o.fel_no"/></li>
+                                <li><b>Fecha Emisión: </b><span t-field="o.fel_date"/></li>
+                                <li><b>Fecha Certificación: </b><span t-field="o.fel_date"/></li>
+                            </ul>
+                        </div>
+                    </div>
+                                <br/>
+                                <br/>
+                    </t>
+                    <t t-if="o.journal_id.factura_cambiaria == True">
+                        <div class="row">
+                            <div class="col-12" style="height: 100px;">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th width="10%" class="text-center"/>
+                                            <th width="10%" class="text-center"><strong>No. Abono:</strong></th>
+                                            <th width="40%" class="text-center"><strong>Fecha:</strong></th>
+                                            <th width="10%" class="text-center"><strong>Monto:</strong></th>
+                                            <th width="10%" class="text-center"/>
+                                            <th width="10%" class="text-center"/>
+                                            <th width="10%" class="text-center"/>
+                                            <th width="10%" class="text-center"/>
+                                        </tr>
+                                    </thead>
+                                    <t t-foreach="o.megaprint_payment_lines" t-as="payment_line">
+                                        <tr>
+                                            <td width="10%" class="text-center"/>
+                                            <td width="10%" class="text-center"><span t-field="payment_line.serial_no"/> </td>
+                                            <td width="40%" class="text-center"><span t-field="payment_line.due_date"/></td>
+                                            <td width="10%" class="text-center"><span t-field="payment_line.amount"/></td>
+                                            <td width="10%" class="text-center"/>
+                                            <td width="10%" class="text-center"/>
+                                            <td width="10%" class="text-center"/>
+                                            <td width="10%" class="text-center"/>
+                                        </tr>
+                                    </t>
+                                </table>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-if="o.journal_id.is_factura_especial == True">
+                        <div class="row">
+                            <div class="col-12" style="height: 100px;">
+                                <table>
+                                    <t t-set="cont" t-value="0"/>
+                                    <t t-foreach="o.amount_by_group" t-as="tax_group">
+                                        <t t-if="cont &gt; 0">
+                                            <tr>
+                                                <td width="10%" class="text-center"/>
+                                                <td width="10%" class="text-center"><span t-esc="tax_group[0]"/></td>
+                                                <td width="40%" class="text-center"><span t-esc="abs(tax_group[1])" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
+                                                <td width="10%" class="text-center"/>
+                                                <td width="10%" class="text-center"/>
+                                                <td width="10%" class="text-center"/>
+                                                <td width="10%" class="text-center"/>
+                                                <td width="10%" class="text-center"/>
+                                            </tr>
+                                        </t>
+                                        <t t-set="cont" t-value="cont + 1"/>
+                                    </t>
+                                </table>
+                            </div>
+                        </div>
+                    </t>
+                    <div class="row">
+                        <div class="col-8">
+                            <b>TOTAL EN LETRAS:
+                                <t t-if="o.journal_id.is_factura_especial == False">
+                                    <span t-esc="o.text_amount"/>
+                                </t>
+                                <t t-elif="o.journal_id.is_factura_especial">
+                                    <span t-esc="o.text_amount_fe"/>
+                                </t>
+
+                            </b>
+                            <br/>
+                            <t t-if="not o.journal_id.is_factura_especial">
+                                <span style="font-weight: bold;">Se cobrara por cheque rechazado por falta de fondos Q112.00</span>
+                            </t>
+                        </div>
+                        <div class="col-4 text-right">
+                            <b>TOTAL:
+                                <t t-if="o.journal_id.is_factura_especial == False">
+                                    <span t-field="o.amount_total" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                                </t>
+                                <t t-elif="o.journal_id.is_factura_especial">
+                                    <t t-raw="total_lineas_fe" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/>
+                                </t>
+                            </b>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <t t-set="expo" t-value="0"/>
+                            <t t-foreach="o.frase_ids" t-as="frase">
+                                <t t-raw="frase.name"/><br/>
+                            </t>
+                        </div>
+                    </div>
+                    <br/>
+                    <t t-if="o.company_id.name.lower() == 'coprimex, s.a.'">
+                        <div class="row justify-content-center">
+                            <div class="col-12 text-center" style="background-color:#0f477c;">
+                                <b>COMPLEMENTOS</b>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <span style="color:white;">1</span>
+                                 <t t-if="o.move_type in ['out_refund', 'in_refund'] and o.journal_id.is_nota_abono">
+                                    No. AUTORIZACION DE DOCUMENTO ORIGEN: <span t-field="o.uuid_refund"/><br/>
+                                    FECHA EMISION DOCUMENTO ORIGEN: <span t-field="o.invoice_refund_id.fel_date"/><br/>
+                                    MOTIVO AJUSTE: Nota de Abono <br/>
+                                </t>
+                                <t t-if="o.move_type in ['out_refund', 'in_refund'] and not o.journal_id.is_nota_abono">
+                                    No. AUTORIZACION DE DOCUMENTO ORIGEN: <span t-field="o.uuid_refund"/><br/>
+                                    FECHA EMISION DOCUMENTO ORIGEN: <span t-field="o.invoice_refund_id.fel_date"/><br/>
+                                    MOTIVO AJUSTE: Nota de Credito <br/>
+                                </t>
+                                OC: <span t-field="o.oc_number"/><br/>
+                                <t t-if="o.narration">
+                                <span t-field="o.narration"/><br/>
+                                <br/>
+                                </t>
+                                <t t-if="o.exportacion_fel">
+                                    NIT: <span t-field="o.partner_id.vat"/><br/>
+                                    Peso: <span t-field="o.peso_total"/>
+                                </t>
+                                <br/>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-if="o.company_id.name.lower() == 'bananeiras, s.a.'">
+                        <div class="row justify-content-center">
+                            <div class="col-12 text-center" style="background-color: #456741;">
+                                <b>COMPLEMENTOS</b>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <span style="color:white;">1</span>
+                                    OC: <span t-field="o.oc_number"/><br/>
+                                    <span t-field="o.narration"/><br/>
+                                <t t-if="o.exportacion_fel">
+                                    NIT: <span t-field="o.partner_id.vat"/><br/>
+                                    Peso: <span t-field="o.peso_total"/>
+                                </t>
+                                <br/>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-if="o.company_id.name.lower() == 'redimerc, s.a.'">
+                        <div class="row justify-content-center">
+                            <div class="col-12 text-center" style="background-color:lightgrey;">
+                                <b>COMPLEMENTOS</b>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <span style="color:white;">1</span>
+                                <t t-if="o.move_type in ['out_refund', 'in_refund'] and o.journal_id.is_nota_abono">
+                                    No. AUTORIZACION DE DOCUMENTO ORIGEN: <span t-field="o.uuid_refund"/><br/>
+                                    FECHA EMISION DOCUMENTO ORIGEN: <span t-field="o.invoice_refund_id.fel_date"/><br/>
+                                    MOTIVO AJUSTE: Nota de Abono <br/>
+                                </t>
+                                <t t-if="o.move_type in ['out_refund', 'in_refund'] and not o.journal_id.is_nota_abono">
+                                    No. AUTORIZACION DE DOCUMENTO ORIGEN: <span t-field="o.uuid_refund"/><br/>
+                                    FECHA EMISION DOCUMENTO ORIGEN: <span t-field="o.invoice_refund_id.fel_date"/><br/>
+                                    MOTIVO AJUSTE: Nota de Credito <br/>
+                                </t>
+                                OC: <span t-field="o.oc_number"/><br/>
+                                <t t-if="o.narration">
+                                <span t-field="o.narration"/><br/>
+                                </t>
+                                <t t-if="o.exportacion_fel">
+                                    NIT: <span t-field="o.partner_id.vat"/><br/>
+                                    Peso: <span t-field="o.peso_total"/>
+                                </t>
+                                <br/>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-if="o.company_id.name.lower() == 'grupo r, s.a.'">
+                        <div class="row justify-content-center">
+                            <div class="col-12 text-center" style="background-color:lightgrey;">
+                                <b>COMPLEMENTOS</b>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <span style="color:white;">1</span>
+                                <t t-if="o.move_type in ['out_refund', 'in_refund'] and o.journal_id.is_nota_abono">
+                                    No. AUTORIZACION DE DOCUMENTO ORIGEN: <span t-field="o.uuid_refund"/><br/>
+                                    FECHA EMISION DOCUMENTO ORIGEN: <span t-field="o.invoice_refund_id.fel_date"/><br/>
+                                    MOTIVO AJUSTE: Nota de Abono <br/>
+                                </t>
+                                <t t-if="o.move_type in ['out_refund', 'in_refund'] and not o.journal_id.is_nota_abono">
+                                    No. AUTORIZACION DE DOCUMENTO ORIGEN: <span t-field="o.uuid_refund"/><br/>
+                                    FECHA EMISION DOCUMENTO ORIGEN: <span t-field="o.invoice_refund_id.fel_date"/><br/>
+                                    MOTIVO AJUSTE: Nota de Credito <br/>
+                                </t>
+                                OC: <span t-field="o.oc_number"/><br/>
+                                <t t-if="o.narration">
+                                <span t-field="o.narration"/><br/>
+                                </t>
+                                <t t-if="o.exportacion_fel">
+                                    NIT: <span t-field="o.partner_id.vat"/><br/>
+                                    Peso: <span t-field="o.peso_total"/>
+                                </t>
+                                <br/>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-if="o.company_id.name.lower() == 'caruss, s.a.'">
+                        <div class="row justify-content-center">
+                            <div class="col-12 text-center" style="background-color:lightgrey;">
+                                <b>COMPLEMENTOS</b>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <span style="color:white;">1</span>
+                                <t t-if="o.move_type in ['out_refund', 'in_refund'] and o.journal_id.is_nota_abono">
+                                    No. AUTORIZACION DE DOCUMENTO ORIGEN: <span t-field="o.uuid_refund"/><br/>
+                                    FECHA EMISION DOCUMENTO ORIGEN: <span t-field="o.invoice_refund_id.fel_date"/><br/>
+                                    MOTIVO AJUSTE: Nota de Abono <br/>
+                                </t>
+                                <t t-if="o.move_type in ['out_refund', 'in_refund'] and not o.journal_id.is_nota_abono">
+                                    No. AUTORIZACION DE DOCUMENTO ORIGEN: <span t-field="o.uuid_refund"/><br/>
+                                    FECHA EMISION DOCUMENTO ORIGEN: <span t-field="o.invoice_refund_id.fel_date"/><br/>
+                                    MOTIVO AJUSTE: Nota de Credito <br/>
+                                </t>
+                                OC: <span t-field="o.oc_number"/><br/>
+                                <t t-if="o.narration">
+                                <span t-field="o.narration"/><br/>
+                                </t>
+                                <t t-if="o.exportacion_fel">
+                                    NIT: <span t-field="o.partner_id.vat"/><br/>
+                                    Peso: <span t-field="o.peso_total"/>
+                                </t>
+                                <br/>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-if="o.company_id.name.lower() in ['coprimex, s.a.']">
+                        <div class="row">
+                            <div class="col-12 text-center" style="background-color:#0f477c;">
+                                <b>DATOS CERTIFICADOR</b>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <span style="font-weight:bold;">No. AUTORIZACION: </span> <span t-field="o.uuid"/><br/>
+                                <span style="font-weight:bold;">MEGAPRINT, S.A.</span> NIT: 50510231
+                            </div>
+                        </div>
+                    </t>
+                    <t t-if="o.company_id.name.lower() in ['redimerc, s.a.']">
+                        <div class="row">
+                            <div class="col-12 text-center" style="background-color:lightgrey;">
+                                <b>DATOS CERTIFICADOR</b>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <span style="font-weight:bold;">No. AUTORIZACION: </span> <span t-field="o.uuid"/><br/>
+                                <span style="font-weight:bold;">MEGAPRINT, S.A.</span> NIT: 50510231
+                            </div>
+                        </div>
+                    </t>
+                    <t t-if="o.company_id.name.lower() in ['bananeiras, s.a.']">
+                        <div class="row">
+                            <div class="col-12 text-center" style="background-color: #456741;">
+                                <b>DATOS CERTIFICADOR</b>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <span style="font-weight:bold;">No. AUTORIZACION: </span> <span t-field="o.uuid"/><br/>
+                                <span style="font-weight:bold;">MEGAPRINT, S.A.</span> NIT: 50510231
+                            </div>
+                        </div>
+                    </t>
+                    <t t-if="o.company_id.name.lower() in ['grupo r, s.a.']">
+                        <div class="row">
+                            <div class="col-12 text-center" style="background-color: lightgrey;">
+                                <b>DATOS CERTIFICADOR</b>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <span style="font-weight:bold;">No. AUTORIZACION: </span> <span t-field="o.uuid"/><br/>
+                                <span style="font-weight:bold;">MEGAPRINT, S.A.</span> NIT: 50510231
+                            </div>
+                        </div>
+                    </t>
+                    <t t-if="o.company_id.name.lower() in ['caruss, s.a.']">
+                        <div class="row">
+                            <div class="col-12 text-center" style="background-color: lightgrey;">
+                                <b>DATOS CERTIFICADOR</b>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <span style="font-weight:bold;">No. AUTORIZACION: </span> <span t-field="o.uuid"/><br/>
+                                <span style="font-weight:bold;">MEGAPRINT, S.A.</span> NIT: 50510231
+                            </div>
+                        </div>
+                    </t>
+
+                </div>
+            </t>
+        </template>
+
+        <template id="report_fel_format">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="lang" t-value="o.invoice_user_id.sudo().lang if o.move_type in ('in_invoice', 'in_refund') else o.partner_id.lang"/>
+                    <t t-call="account_invoice_megaprint.report_fel_format_document" t-lang="lang"/>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

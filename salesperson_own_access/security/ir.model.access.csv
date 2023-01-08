@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_order_owner,sale.order.owner,sale.model_sale_order,salesperson_own_access.own_lead_group,1,1,1,1
+access_sale_order_line_owner,sale.order.line.owner,sale.model_sale_order_line,salesperson_own_access.own_lead_group,1,1,1,1
+access_res_partner_sale_owner,res.partner.sale.owner,base.model_res_partner,salesperson_own_access.own_lead_group,1,1,1,1
+access_account_invoice_owner,account_invoice owner,account.model_account_move,salesperson_own_access.own_lead_group,1,1,1,1

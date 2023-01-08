@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_registration_bpm_tree" model="ir.ui.view">
+            <field name="name">view.registration.bpm.tree</field>
+            <field name="model">registration.bpm</field>
+            <field eval="100" name="priority"/>
+            <field name="arch" type="xml"> 
+                <tree string="Vista de lista registros de bpm" create="true" edit="true" import="true">
+                    <field name="name" invisible="0"/>
+                    <field name="date" string="Fecha"/>
+                    <field name="turn"/>
+                    <field name="create_uid" string="Creado por"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_registration_bpm_form" model="ir.ui.view">
+            <field name="name">view.registration.bpm.form</field>
+            <field name="model">registration.bpm</field>
+            <field eval="100" name="priority"/>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="print_report" type="object" string="IMPRIMIR" class="oe_highlight" attrs="{'invisible': ['|',('name', '=', 'Nuevo')]}"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="date" />
+                                <field name="turn" />
+                                <field name="create_uid" string="Creado por"/>
+                                <field name="company_id" invisible="1" />
+                            </group>                            
+                        </group>
+                        <notebook>
+                            <page name="page_registration_bpm_lines" string="Registros">
+                                <field name="registration_bpm_lines_id">
+                                    <tree string="registration bpm Lines">
+                                        <field name="employee_id" />
+                                        <field name="t_shirt" />
+                                        <field name="gabacha" />
+                                        <field name="pants" />
+                                        <field name="mask_cofia" />
+                                        <field name="shoe" />
+                                        <field name="equip_seg" />
+                                        <field name="maquillaje" />
+                                        <field name="locion" />
+                                        <field name="long_pinter" />
+                                        <field name="accessory" />
+                                        <field name="object_perso" />
+
+                                        <field name="description" />
+                                        <field name="reference" invisible="1" />
+                                        <field name="registration_bpm_id" invisible="1" />
+                                    </tree>
+                                    <form>
+                                        <div class="oe_tittle" name="title_quality_control">
+                                            <h1>
+                                                <field name="reference" />
+                                            </h1>
+                                        </div>
+                                        <group>
+                                            <group name="grupo_uniforme" string="Uniforme">
+                                                <field name="employee_id" />
+                                                <field name="t_shirt"/>
+                                                <field name="gabacha" />
+                                                <field name="pants" />
+                                                <field name="mask_cofia" />
+                                                <field name="shoe" />
+                                                <field name="equip_seg" />
+                                            </group>
+                                            <group name="grupo_uniforme" string="Aseo personal (ausencia de)">
+                                                <field name="maquillaje" />
+                                                <field name="locion" />
+                                                <field name="long_pinter" />
+                                                <field name="accessory" />
+                                                <field name="object_perso" />
+
+                                            </group>
+                                            <group>
+                                                <field name="description" />
+                                            </group>
+                                        </group>
+                                    </form>
+                                </field>                                
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_registration_bpm" model="ir.actions.act_window">
+            <field name="name">Registros BPMs</field>
+            <field name="res_model">registration.bpm</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_registration_bpm_tree"/>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Crear nuevos registro en BPMs
+              </p>
+            </field>
+        </record>
+
+        <menuitem 
+            id="menu_action_registration_bpm" 
+            name="Registros BPMs"
+            action="action_registration_bpm"
+            parent="menu_root_quality_control_points" 
+            sequence="4"/>
+        
+    </data>
+</odoo>

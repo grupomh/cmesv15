@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template inherit_id="stock.report_picking" id="report_picking_extend" >
+        <xpath expr="//div[@class='row mt48 mb32']" position="inside">
+            <div class="col-auto" name="sale_order_prod">
+                <strong>Presupuesto:</strong>
+                <p t-field="o.sale_order_prod_id"/>
+            </div>
+        </xpath>
+    </template>
+</odoo>

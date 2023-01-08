@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <record id="invoice_cancel_wizard_view_form" model="ir.ui.view">
+            <field name="name">invoice.cancel.wizard.view.form</field>
+            <field name="model">wizard.invoice.cancel</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <!--<field name="number_rows" invisible="1"/>-->
+                        <!--<label string="Cancelar facturas en lotes"/>-->
+                        <field name="apply_invisible"/>
+                    </group>
+                    <footer>
+                        <button name="action_batch_cancel" string="Cancelar" type="object"/>
+                        or
+                        <button string="Cerrar" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>
