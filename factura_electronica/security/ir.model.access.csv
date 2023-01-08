@@ -1,3 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_resoluciones_eface_manager,resoluciones.eface.manager,factura_electronica.model_ir_sequence_resolution,account.group_account_manager,1,1,1,1
-access_resoluciones_eface_user,resoluciones.eface.user,factura_electronica.model_ir_sequence_resolution,account.group_account_user,1,1,1,0
