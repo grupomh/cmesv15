@@ -1,0 +1,8 @@
+<odoo>
+
+    <record id="campo_impresion" model="res.groups">
+        <field name="name">mostrar campo impresion</field>
+    </record>
+
+
+</odoo>

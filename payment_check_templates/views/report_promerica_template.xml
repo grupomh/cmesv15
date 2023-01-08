@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <template id="external_layout_vouchers">
+        <!-- Multicompany -->
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id"/>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company"/>
+        </t>
+        <div class="header">
+            
+       </div>
+        <div class="article">
+          <t t-raw="0" />
+        </div>
+
+         
+    </template>
+    
+    <template id="report_promerica_vourhce_document">
+        <t t-call="payment_check_templates.external_layout_vouchers">
+            <t t-set="o" t-value="o.with_context({'lang': lang})"/>
+            <style>
+                table.dltrc {
+                    width: 95%;
+                    border-collapse: separate;
+                    border-spacing: 0px;
+                    border: solid black 2px;
+                    border-radius: 8px;
+                }
+
+                tr.dlheader {
+                    text-align: center;
+                    font-weight: bold;
+                    border-left: solid black 1px;
+                    padding: 2px
+                }
+
+                td.dlheader {
+                    background: #d9d9d9;
+                    text-align: center;
+                    font-weight: bold;
+                    border-left: solid black 1px;
+                    border-radius: 0px;
+                    padding: 2px
+                }
+
+                tr.dlinfo,
+                td.dlinfo {
+                    text-align: center;
+                    border-left: solid black 1px;
+                    border-right: solid black 1px;
+                    border-top: solid black 1px;
+                    padding: 2px
+                }
+                
+                td.dlcell {
+                    text-align: center;
+                    border-right: solid black 1px;
+                    padding: 2px
+                }
+                th.dlcell {
+                    text-align: center;
+                    border-right: solid black 1px;
+                    padding: 2px
+                }
+
+                td.dlinfo:first-child,
+                td.dlheader:first-child {
+                    border-left: none;
+                }
+
+                td.dlheader:first-child {
+                    border-radius: 5px 0 0 0;
+                }
+
+                td.dlheader:last-child {
+                    border-radius: 0 5px 0 0;
+                }
+
+
+                /*===== hover effects =====*/
+
+
+                /*tr.hover01:hover,
+                tr.hover02:hover {
+                    background-color: #dde6ee;
+                }*/
+
+
+                /* === ROW HOVER === */
+
+
+                /*tr.hover02:hover:last-child {
+                    background-color: #dde6ee;
+                    border-radius: 0 0 6px 6px;
+                }*/
+
+
+                /* === CELL HOVER === */
+
+                td.hover01:hover {
+                    background-color: #dde6ee;
+                }
+
+                td.hover02:hover {
+                    background-color: #dde6ee;
+                }
+
+                td.hover02:first-child {
+                    border-radius: 0 0 0 6px;
+                }
+
+            </style>
+            <table style="width: 905px;">
+                <tbody>
+                    <tr>
+                        <td style="width: 80px;height: 40px;vertical-align: bottom;"></td>
+                        <td style="width: 346px;height: 40px;vertical-align: bottom;">Ciudad de Guatemala, <span t-esc="o.payment_date.strftime('%d de %B del %Y')"/></td>
+                        <td style="width: 150px;height: 40px;text-align: center;vertical-align: bottom;"><span t-field="o.amount"/></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 80px;height: 40px;vertical-align: bottom;"></td>
+                        <td style="width: 346px;height: 40px;vertical-align: bottom;" colspan="2"><span t-field="o.partner_id.name"/></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 80px;height: 40px;vertical-align: bottom;"></td>
+                        <td style="width: 346px;height: 40px;vertical-align: bottom;" colspan="2"><span t-field="o.check_amount_in_words"/></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 80px;height: 40px;vertical-align: bottom;"></td>
+                        <td style="width: 346px;height: 40px;vertical-align: bottom;" colspan="2"><span t-field="o.check_type"/></td>
+                    </tr>
+                </tbody>
+            </table>
+            <br/><br/>
+            <br/><br/>
+            <br/><br/>
+            <table class="dltrc" style="width: 905px;ackground:none">
+                <thead>
+                    <tr class="dlinfo hover01">
+                        <th class="dlinfo hover01" style="background-color: gray; text-align: center;width: 110px;"><strong>CODIGO</strong></th>
+                        <th class="dlinfo hover01" style="background-color: gray; text-align: center;width: 465px;"><strong>CUENTA CONTABLE</strong></th>
+                        <t groups="base.group_multi_currency">
+                            <th class="dlinfo hover01" style="background-color: gray; text-align: center;width: 110px;"><strong>IMPORTE EN MONEDA</strong></th>
+                        </t>
+                        <th class="dlinfo hover01" style="background-color: gray; text-align: center;width: 110px;"><strong>DEBE</strong></th>
+                        <th class="dlinfo hover01" style="background-color: gray; text-align: center;width: 110px;"><strong>HABER</strong></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="o.move_line_ids" t-as="move_line">
+                        <tr class="dlinfo hover01" style="height: 14px;">
+                            <td  class="dlcell" style="width: 110px;text-align: left;"><span t-field="move_line.account_id.code"/></td>
+                            <td class="dlcell" style="width: 465px;text-align: left;"><span t-field="move_line.account_id.name"/></td>
+                            <t groups="base.group_multi_currency">
+                                <td class="dlcell" style="width: 110px;text-align: right;"><span t-field="move_line.amount_currency"/></td>
+                            </t>
+                            <td class="dlcell" style="width: 110px;text-align: right;"><span t-field="move_line.debit"/></td>
+                            <td style="width: 110px;text-align: right;"><span t-field="move_line.credit"/></td>
+                        </tr>
+                    </t>
+                    <tr class="dlinfo hover01" style="height: 40px;">
+                        <td  class="dlcell" style="width: 110px;text-align: left;"></td>
+                        <td class="dlcell" style="width: 465px;text-align: left;"></td>
+                        <t groups="base.group_multi_currency">
+                            <td class="dlcell" style="width: 110px;text-align: right;"></td>
+                        </t>
+                        <td class="dlcell" style="width: 110px;text-align: right;"></td>
+                        <td style="width: 110px;text-align: right;"></td>
+                    </tr>
+                    <tr class="dlinfo hover01" style="height: 40px;">
+                        <td  class="dlcell" style="width: 110px;text-align: left;"></td>
+                        <td class="dlcell" style="width: 465px;text-align: left;"></td>
+                        <t groups="base.group_multi_currency">
+                            <td class="dlcell" style="width: 110px;text-align: right;"></td>
+                        </t>
+                        <td class="dlcell" style="width: 110px;text-align: right;"></td>
+                        <td style="width: 110px;text-align: right;"></td>
+                    </tr>
+                    <tr class="dlinfo hover01" style="height: 40px;">
+                        <td  class="dlcell" style="width: 110px;text-align: left;"></td>
+                        <td class="dlcell" style="width: 465px;text-align: left;"></td>
+                        <t groups="base.group_multi_currency">
+                            <td class="dlcell" style="width: 110px;text-align: right;"></td>
+                        </t>
+                        <td class="dlcell" style="width: 110px;text-align: right;"></td>
+                        <td style="width: 110px;text-align: right;"></td>
+                    </tr>
+                    <tr class="dlinfo hover01" style="height: 40px;">
+                        <td  class="dlcell" style="width: 110px;text-align: left;"></td>
+                        <td class="dlcell" style="width: 465px;text-align: left;"></td>
+                        <t groups="base.group_multi_currency">
+                            <td class="dlcell" style="width: 110px;text-align: right;"></td>
+                        </t>
+                        <td class="dlcell" style="width: 110px;text-align: right;"></td>
+                        <td style="width: 110px;text-align: right;"></td>
+                    </tr>
+                    <tr class="dlinfo hover01" style="height: 40px;">
+                        <td  class="dlcell" style="width: 110px;text-align: left;"></td>
+                        <td class="dlcell" style="width: 465px;text-align: left;"></td>
+                        <t groups="base.group_multi_currency">
+                            <td class="dlcell" style="width: 110px;text-align: right;"></td>
+                        </t>
+                        <td class="dlcell" style="width: 110px;text-align: right;"></td>
+                        <td style="width: 110px;text-align: right;"></td>
+                    </tr>
+                    <tr class="dlinfo hover01">
+                        <table class="dltrc" style="width: 905px;ackground:none">
+                            <thead>
+                                <tr class="dlinfo hover01">
+                                    <th class="dlcell" style="text-align: center;width: 180px;"><strong>NUMERO CHEQUE</strong></th>
+                                    <th class="dlcell" style="text-align: center;width: 180px;"><strong>HECHO POR</strong></th>
+                                    <th class="dlcell" style="text-align: center;width: 180px;"><strong>REVISADO POR</strong></th>
+                                    <th style="text-align: center;width: 365px;"><strong>DPI/NOMBRE</strong></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="dlinfo hover01" style="height: 60px;">
+                                    <td  class="dlcell" style="width: 180px;text-align:center;vertical-align: bottom;"><span t-field="o.name"/></td>
+                                    <td class="dlcell" style="width: 180px;text-align:center;vertical-align: bottom;"><span t-field="o.create_uid.name"/></td>
+                                    <td class="dlcell" style="width: 180px;text-align:center;"></td>
+                                    <td style="width: 365px;text-align:center;vertical-align: bottom;">Recibido por:______________________________</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <br/><br/>
+
+        </t>
+    </template>
+    
+
+    <template id="report_promerica_voucher">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="lang" t-value="o.partner_id.lang"/>
+                <t t-call="payment_check_templates.report_promerica_vourhce_document" t-lang="lang"/>
+            </t>
+        </t>
+    </template>
+
+</odoo>

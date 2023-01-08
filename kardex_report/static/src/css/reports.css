@@ -1,0 +1,30 @@
+.report_total {
+    border-bottom: 3px solid black;
+    border-top: 1px solid black;
+}
+
+.header_1 {
+    border-top: 1px solid black;
+    text-align: center;
+    font-weight: bold;
+}
+
+.o_account_reports_header_hierarchy  th {
+    border: none !important;
+}
+
+.js_account_product_m2m .o_td_label {
+    display: none;
+}
+
+#products_field {
+    padding: 0;
+}
+
+.js_account_product_m2m .o_inner_group {
+    margin: 0;
+}
+
+.header_producto {
+    border-bottom: none !important;
+}

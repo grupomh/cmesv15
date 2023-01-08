@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="inherit_view_hr_employee_form" model="ir.ui.view">
+            <field name="name">hr.employee.view.form.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <button id="hr_presence_button" position="after">
+                    <button name="call_of_attention_action_open" type="object" class="oe_stat_button" icon="fa-pencil-square-o"  >
+
+                        <div class="o_stat_info" >
+                            <field name="count_call_of_atention" class="o_stat_value" decoration-danger="count_call_of_atention &gt;= 3" decoration-it="count_call_of_atention &gt;= 3"/>
+                            <span class="o_stat_text" >Llamado de atencion</span>
+                        </div>
+                    </button>
+
+                </button>
+            </field>
+        </record>
+
+        <record id="inherit_view_hr_employee_kanban" model="ir.ui.view">
+            <field name="name">hr.employee.view.kanban.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.hr_kanban_view_employees"/>
+            <field name="arch" type="xml">
+                <li t-if="record.work_phone.raw_value" position="after">
+
+                    <field name="count_call_of_atention" invisible="1" />
+
+                    <xpath expr="//div[hasclass('oe_kanban_global_click')]" position="inside" >
+                        <span t-if="record.count_call_of_atention.value&gt;=3" class="badge badge-pill badge-danger" >                            
+                            <i class="fa fa-fw fa-pencil-square-o" role="img" aria-label="LLamadas de atencion" title="Llamadas de atencion"/>
+                            <t t-esc="record.count_call_of_atention.value"/>
+                        </span>
+                    </xpath>
+                </li>    
+            </field>
+        </record>
+
+    </data>
+</odoo>

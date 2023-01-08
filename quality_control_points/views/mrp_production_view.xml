@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="inherit_view_mrp_production_form" model="ir.ui.view">
+            <field name="name">mrp.production.view.form.inherit</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+            <field name="arch" type="xml">
+                <field name="company_id" position="after">
+                    <field name="cat_process" />
+                </field>
+                <field name="user_id" position="after">
+                    <field name="turn" />
+                </field>
+                
+                <!--Insercion de una page en modulo de fabricacion-->
+                <notebook position="inside">
+                    <page name="view_quality_control_points_tree" string="Puntos de control">
+                        <field name="quality_control_lines">
+                            <tree string="quality_control_points_id_details" >
+                                <field name="create_date"/>
+                                <field name="cat_process"/>
+                                <field name="turn"/>
+                                <field name="production_id" invisible="0"/>
+                                <field name="create_uid" string="Creado por"/>
+                            </tree>
+                            <form >
+                                <div class="oe_tittle" name="title_quality_control">
+                                        <h1>
+                                            <field name="name" />
+                                        </h1>
+                                    </div>
+                                <group >
+                                    <!--IZQUIERDA //////////////////////////-->
+                                    <group>
+                                        <!-- se trae de otro modulo-->
+                                        <field name="production_id" invisible="1"/>
+                                        <field name="product_id" />
+                                        <field name="turn" />
+                                        <field name="create_date" string="Fecha/hora Control"/>
+                                        <field name="company_id" invisible="1"/>
+                                        <field name="move_id" invisible="1"/>
+                                        <field name="cat_process" />
+                                        <field name="maintance_equipment_ids" widget="many2many_tags"/>
+                                        <field name="employee_id" widget="many2many_tags" domain="[('department_id', 'ilike', 'Produc')]"/>
+                                        <field name="create_uid" string="Creado por"/>
+                                        <!-- Envasado-->
+                                        <H3 attrs="{'invisible': [['cat_process','!=','Envasado']]}">Envasado</H3>
+                                        <field name="grams_weights_qty" attrs="{'invisible': [('cat_process','!=','Extrusion'),('cat_process','!=','Confiteria'),('cat_process','!=','Moldeado'),('cat_process','!=','Envasado'),('cat_process','!=','Encajado'),('cat_process','!=','Bañado galleta'),('cat_process','!=','Bases'),('cat_process','!=','Firsclass llenado'),('cat_process','!=','Chocotaza')], 'required': ['|','|','|','|','|','|','|','|',['cat_process','=','Extrusion'],['cat_process','=','Confiteria'],['cat_process','=','Moldeado'],['cat_process','=','Envasado'],['cat_process','=','Encajado'],['cat_process','=','Bañado galleta'],['cat_process','=','Bases'],['cat_process','=','Firsclass llenado'],['cat_process','=','Chocotaza']]}" /> 
+                                        <field name="meets_weight" attrs="{'invisible': [('cat_process','!=','Extrusion'),('cat_process','!=','Confiteria'),('cat_process','!=','Moldeado'),('cat_process','!=','Envasado'),('cat_process','!=','Encajado'),('cat_process','!=','Bañado galleta'),('cat_process','!=','Bases'),('cat_process','!=','Firsclass llenado'),('cat_process','!=','Chocotaza')], 'required': ['|','|','|','|','|','|','|','|',['cat_process','=','Extrusion'],['cat_process','=','Confiteria'],['cat_process','=','Moldeado'],['cat_process','=','Envasado'],['cat_process','=','Encajado'],['cat_process','=','Bañado galleta'],['cat_process','=','Bases'],['cat_process','=','Firsclass llenado'],['cat_process','=','Chocotaza']]}"/>
+                                        <field name="horizontal_seal" attrs="{'invisible': [['cat_process','!=','Envasado']],'required': [['cat_process','=','Envasado']]}"/>
+                                        <field name="vertical_seal" attrs="{'invisible': [['cat_process','!=','Envasado']],'required': [['cat_process','=','Envasado']]}"/>
+                                        <field name="centered_art" attrs="{'invisible': [['cat_process','!=','Envasado']],'required': [['cat_process','=','Envasado']]}"/>
+                                        <field name="batch_printing" attrs="{'invisible': [['cat_process','!=','Envasado']],'required': [['cat_process','=','Envasado']]}"/>
+                                        <field name="date_printing" attrs="{'invisible': [['cat_process','!=','Envasado']],'required': [['cat_process','=','Envasado']]}"/>
+                                        <!--galletas Extrusion-->
+                                        <H3 attrs="{'invisible': [['cat_process','!=','Extrusion']]}">Galletas Extrusion</H3>
+                                        <field name="rpm_ex_qty" attrs="{'invisible': [['cat_process','!=','Extrusion']], 'required': [['cat_process','=','Extrusion']]}" />
+                                        <field name="rpm_dos_qty" attrs="{'invisible': [['cat_process','!=','Extrusion']], 'required': [['cat_process','=','Extrusion']]}"/>
+                                        <field name="rpm_rodihal_qty" attrs="{'invisible': [['cat_process','!=','Extrusion']], 'required': [['cat_process','=','Extrusion']]}"/>
+                                        <field name="rpm_rodicu_qty" attrs="{'invisible': [['cat_process','!=','Extrusion']], 'required': [['cat_process','=','Extrusion']]}"/>
+                                        <field name="rpm_bomb_qty" attrs="{'invisible': [['cat_process','!=','Extrusion']], 'required': [['cat_process','=','Extrusion']]}"/>
+                                        <field name="rpm_band_qty" attrs="{'invisible': [['cat_process','!=','Extrusion']], 'required': [['cat_process','=','Extrusion']]}"/>
+                                        <!--galletas Extrusion-->
+                                        <H3 attrs="{'invisible': [['cat_process','!=','Bases']]}">Bases Extrusion</H3>
+                                        <field name="diametro_qty" attrs="{'invisible': [['cat_process','!=','Bases']], 'required': [['cat_process','=','Bases']]}"/>
+                                        <field name="weight_bag" attrs="{'invisible': [['cat_process','!=','Bases']], 'required': [['cat_process','=','Bases']]}"/>
+                                        <!--First Class-->
+                                        <H3 attrs="{'invisible': [['cat_process','!=','Firsclass llenado']]}">First Class</H3>
+                                        <field name="clean_jar" attrs="{'invisible': [['cat_process','!=','Firsclass llenado']], 'required': [['cat_process','=','Firsclass llenado']]}"/>
+                                        <field name="correct_sleeve" attrs="{'invisible': [['cat_process','!=','Firsclass llenado']], 'required': [['cat_process','=','Firsclass llenado']]}"/>
+                                        <field name="add_sleeve" attrs="{'invisible': [['cat_process','!=','Firsclass llenado']], 'required': [['cat_process','=','Firsclass llenado']]}"/>
+                                        <field name="sealing_margin" attrs="{'invisible': [['cat_process','!=','Firsclass llenado']], 'required': [['cat_process','=','Firsclass llenado']]}"/>
+                                        <field name="security_seal" attrs="{'invisible': [['cat_process','!=','Firsclass llenado']], 'required': [['cat_process','=','Firsclass llenado']]}"/>
+                                    </group>
+                                    <!--DERECHA///////////////////////-->
+                                    <group>
+                                        <!--Seleccion compartida-->
+                                        <H3>Selecccion compartida</H3>
+                                        <field name="seleccion" attrs="{'invisible': [('cat_process','!=','Extrusion'),('cat_process','!=','Cubiertas'),('cat_process','!=','Confiteria'),('cat_process','!=','Chocotaza'),('cat_process','!=','Chocolate liquido galleta')], 'required': ['|','|','|','|','|',['temp_qty','&gt;',0.1],['color_s','=',True],['sabor_s','=',True],['olor_s','=',True],['apariencia_s','=',True],['textura_s','=',True]]}"/>
+                                        <field name="temp_qty" attrs="{'invisible': [('cat_process','!=','Cubiertas'),('cat_process','!=','Confiteria'),('cat_process','!=','Chocotaza'),('cat_process','!=','Chocolate liquido galleta')], 'required': [('cat_process','=','Cubiertas'),('cat_process','=','Confiteria'),('cat_process','=','Chocotaza'),('cat_process','=','Chocolate liquido galleta')]}"/>
+                                        <field name="color_s" attrs="{'invisible': [('cat_process','!=','Extrusion'),('cat_process','!=','Cubiertas'),('cat_process','!=','Confiteria'),('cat_process','!=','Chocotaza'),('cat_process','!=','Chocolate liquido galleta')], 'required': [('cat_process','=','Extrusion'),('cat_process','=','Cubiertas'),('cat_process','=','Confiteria'),('cat_process','=','Chocotaza'),('cat_process','=','Chocolate liquido galleta')]}"/>
+                                        <field name="sabor_s" attrs="{'invisible': [('cat_process','!=','Extrusion'),('cat_process','!=','Cubiertas'),('cat_process','!=','Confiteria'),('cat_process','!=','Chocotaza'),('cat_process','!=','Chocolate liquido galleta')], 'required': [('cat_process','=','Extrusion'),('cat_process','=','Cubiertas'),('cat_process','=','Confiteria'),('cat_process','=','Chocotaza'),('cat_process','=','Chocolate liquido galleta')]}"/>
+                                        <field name="olor_s" attrs="{'invisible': [('cat_process','!=','Extrusion'),('cat_process','!=','Cubiertas'),('cat_process','!=','Confiteria'),('cat_process','!=','Chocotaza'),('cat_process','!=','Chocolate liquido galleta')], 'required': [('cat_process','=','Extrusion'),('cat_process','=','Cubiertas'),('cat_process','=','Confiteria'),('cat_process','=','Chocotaza'),('cat_process','=','Chocolate liquido galleta')]}"/>
+                                        <field name="apariencia_s" attrs="{'invisible': [('cat_process','!=','Extrusion'),('cat_process','!=','Cubiertas'),('cat_process','!=','Confiteria'),('cat_process','!=','Chocotaza'),('cat_process','!=','Chocolate liquido galleta')], 'required': [['cat_process','=','Chocolate liquido galleta']]}"/>
+                                        <field name="textura_s" attrs="{'invisible': [('cat_process','!=','Extrusion'),('cat_process','!=','Cubiertas'),('cat_process','!=','Confiteria'),('cat_process','!=','Chocotaza'),('cat_process','!=','Chocolate liquido galleta')], 'required': [['cat_process','=','Chocolate liquido galleta']]}"/>
+                                        <!--Encajado-->
+                                        <H3 attrs="{'invisible': [['cat_process','!=','Encajado']]}">Encajado</H3>
+                                        <field name="box_weight" attrs="{'invisible': [['cat_process','!=','Encajado']], 'required': [['cat_process','=','Encajado']]}"/>
+                                        <field name="armed_box" attrs="{'invisible': [['cat_process','!=','Encajado']], 'required': [['cat_process','=','Encajado']]}"/>
+                                        <field name="box_sealing" attrs="{'invisible': [['cat_process','!=','Encajado']], 'required': [['cat_process','=','Encajado']]}"/>
+                                        <field name="bag_sealing" attrs="{'invisible': [['cat_process','!=','Encajado']], 'required': [['cat_process','=','Encajado']]}"/>
+                                        <field name="labelled" attrs="{'invisible': [['cat_process','!=','Encajado']], 'required': [['cat_process','=','Encajado']]}"/>
+                                        <field name="parquet" attrs="{'invisible': [['cat_process','!=','Encajado']], 'required': [['cat_process','=','Encajado']]}"/>
+                                        <!--Chocotaza-->
+                                        <H3 attrs="{'invisible': [['cat_process','!=','Chocotaza']]}">Chocotaza</H3>
+                                        <field name="vibrated_time" attrs="{'invisible': [['cat_process','!=','Chocotaza']], 'required': [['cat_process','=','Chocotaza']]}"/>
+                                        <field name="bar_length_qty" attrs="{'invisible': [('cat_process','!=','Chocotaza'),('cat_process','!=','Extrusion')], 'required': ['|',['cat_process','=','Chocotaza'],['cat_process','=','Extrusion']]}"/>
+                                        <field name="bar_width_qty" attrs="{'invisible': [('cat_process','!=','Chocotaza'),('cat_process','!=','Extrusion')], 'required': ['|',['cat_process','=','Chocotaza'],['cat_process','=','Extrusion']]}"/>
+                                        <field name="bar_height_qty" attrs="{'invisible': [('cat_process','!=','Chocotaza'),('cat_process','!=','Extrusion')], 'required': ['|',['cat_process','=','Chocotaza'],['cat_process','=','Extrusion']]}"/>
+                                        <field name="temp_room_qty" attrs="{'invisible': [['cat_process','!=','Chocotaza']], 'required': [['cat_process','=','Chocotaza']]}"/>
+                                        <!--Confiteria-->
+                                        <H3 attrs="{'invisible': [['cat_process','!=','Confiteria']]}">Confiteria</H3>
+                                        <field name="terminated_granel" attrs="{'invisible': [['cat_process','!=','Confiteria']], 'required': [['cat_process','=','Confiteria']]}"/>
+                                        <field name="employee_id_user" domain="[('job_id', 'ilike', 'Inocu')]" />
+                                    </group>
+                                </group>
+                            </form>
+                        </field>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+    </data>
+</odoo>

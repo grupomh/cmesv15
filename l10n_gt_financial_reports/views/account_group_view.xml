@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="account_group_form_inherit" model="ir.ui.view">
+        <field name="name">account.group.form.inherit</field>
+        <field name="model">account.group</field>
+        <field name="inherit_id" ref="account.view_account_group_form"/>
+        <field name="arch" type="xml">
+            <field name="parent_id" position="after">
+                <field name="show_details" />
+            </field>
+            <xpath expr="//form/sheet" position="inside">
+                <notebook>
+                    <page name="page_child_account" string="Cuentas Hijas">
+                        <field name="child_account_ids" readonly="1">
+                            <tree editable="top">
+                                <field name="code" />
+                                <field name="name" />
+                                <field name="user_type_id" />
+                                <field name="group_id" />
+                            </tree>
+                        </field>
+                    </page>
+                    <page name="page_child_ledger_group" string="Grupos de Cuentas">
+                        <field name="child_group_ids">
+                            <tree editable="top">
+                                <field name="code_prefix" />
+                                <field name="name" />
+                                <field name="parent_id" />
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+</odoo>

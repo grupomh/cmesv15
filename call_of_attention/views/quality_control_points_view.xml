@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <menuitem id="menu_call_of_attention" 
+                    name="Llamados de atencion" 
+                    parent="quality_control_points.menu_root_quality_control_points" 
+                    action="action_call_of_attention" 
+                    sequence="2"/>
+        
+    </data>
+</odoo>

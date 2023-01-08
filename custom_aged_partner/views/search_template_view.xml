@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="aged_reports_search_template" inherit_id="account_reports.search_template_partner">
+            <xpath expr="//a[@class='dropdown-toggle account_partner_filter']" position="replace">
+                <a t-if="options.get('partner')" type="button" class="dropdown-toggle account_partner_filter"
+                   data-toggle="dropdown">
+                    <span class="fa fa-folder-open"/>
+                    Partners
+                </a>
+            </xpath>
+        </template>
+    </data>
+</odoo>

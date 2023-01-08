@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="cme_general_ledger_tmp">
+            <t t-call="web.html_container">
+                <!--<t t-foreach="docs" t-as="o">-->
+                    <t t-call="web.basic_layout">
+                        <link rel="stylesheet" href="/l10n_gt_financial_reports/static/src/css/common.css"/>
+                        <div class="page">
+                            <table>
+                                <t t-call="l10n_gt_financial_reports.header_tmp"/>
+                                <tbody>
+                                    <t t-foreach="lines" t-as="line">
+                                        <!--Como ahora el template es compartido con el libro consolidado y el get_lines de dicho modelo retorna line['id'] como entero-->
+                                        <!--para las cuentas es que mejor defino una variable aqui para no tener que modificar la funcion alla-->
+                                        <!--<t t-set="str_line_id" t-value="str(line['id'])"/>
+                                        <t t-set="name_class"
+                                           t-value="'with_bold' if (line['level'] == 1 or 'account_' in str_line_id) else 'non_bold'"/>
+                                        <t t-set="level_class" t-value="'level_' + str(line['level'])"/>
+                                        <t t-set="type_class" t-value="'group' if 'group' in str_line_id else ''"/>
+                                        <t t-set="type_class"
+                                           t-value="'account' if 'account' in str_line_id or isinstance(line['id'], int) else type_class"/>
+                                        <t t-set="type_class"
+                                           t-value="'date' if 'date' in str_line_id else type_class"/>
+                                        <t t-set="type_class"
+                                           t-value="'total' if 'total' in str_line_id else type_class"/>-->
+
+                                        <tr>
+                                            <!--<t t-if="any(substring in str_line_id for substring in ['section-', '__group_']) and line['level'] &lt;= 3">-->
+                                                <td>
+                                                    <span t-esc="line.get('group_code', '')"/><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]>
+                                                    <span t-esc="line.get('group_name', '')"/>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="line.get('initial_balance', '')"
+                                                          t-options="{'widget': 'float', 'precision': 2}"/>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="line.get('debit', '')"
+                                                          t-options="{'widget': 'float', 'precision': 2}"/>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="line.get('credit', '')"
+                                                          t-options="{'widget': 'float', 'precision': 2}"/>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="line.get('balance', '')"
+                                                          t-options="{'widget': 'float', 'precision': 2}"/>
+                                                </td>
+                                            <!--</t>-->
+                                        </tr>
+                                        <t t-if="line.get('details',[])">
+                                            <t t-foreach="line.get('details',[])" t-as="d_aml">
+                                                <tr>
+                                                    <td style="padding-left: 30px;">
+                                                        <span t-esc="d_aml.get('date', '')"/><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]><![CDATA[&nbsp;]]>
+                                                        <span t-esc="d_aml.get('description', '')"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="d_aml.get('initial_balance', '')" t-options="{'widget': 'float', 'precision': 2}"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="d_aml.get('debit', '')" t-options="{'widget': 'float', 'precision': 2}"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="d_aml.get('credit', '')" t-options="{'widget': 'float', 'precision': 2}"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-esc="d_aml.get('balance', '')" t-options="{'widget': 'float', 'precision': 2}"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </t>
+                                    </t>
+                                </tbody>
+                            </table>
+                            <t t-call="l10n_gt_financial_reports.footer_tmp"/>
+                        </div>
+                    </t>
+                <!--</t>-->
+            </t>
+        </template>
+    </data>
+</odoo>

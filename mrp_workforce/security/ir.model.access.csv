@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mrp_workforce,access.mrp.workforce,model_mrp_workforce,mrp_workforce.group_mrp_workforce_user,1,1,1,0
+access_mrp_workforce_manager,access.mrp.workforce.manager,model_mrp_workforce,mrp_workforce.group_mrp_workforce_manager,1,1,1,1

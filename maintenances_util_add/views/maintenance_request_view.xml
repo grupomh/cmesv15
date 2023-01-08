@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!--  inherit form view -->
+        <record id="consu_repuest_maintenance" model="ir.ui.view">
+            <field name="name">consu.repuest.maintenance</field>
+            <field name="model">maintenance.request</field>
+            <field name="inherit_id" ref="maintenance.hr_equipment_request_view_form"/>
+            <field name="arch" type="xml">
+                <button name="archive_equipment_request" position="after">
+                    <button name="button_consu_repuest_action" type="object" string="Repuestos" class="oe_highlight"/>
+                </button>
+
+                <field name="company_id" position="after">
+                    <field name="type_ope_picking"/>
+                </field>
+
+                <field name="maintenance_type" position="after">
+                    <field name="prev_cosul" widget="radio" attrs="{'invisible': [['maintenance_type','!=','preventive']], 'required': [['maintenance_type','=','preventive']]}"/>
+                    <field name="cod_type_maint" invisible="1"/>
+                    <field name="cod_complete" invisible="1"/>
+                    <field name="currency_id" invisible="1" />
+                </field>
+
+                <xpath expr="//div[hasclass('oe_title')]" position="inside">
+                        <h3>
+                            <field name="cod_complete" placeholder="Maintenance Request"/>
+                        </h3>
+                </xpath>
+
+                <div class="oe_right" position="before">
+                    <div name="button_box" class="oe_button_box">
+                        <button name="maintenance_consu_repuest_action_open_" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('count_consu_repuest', '=', 0)]}" context="{'search_default_maintenance_equipment_id': active_id}">
+                            <div class="o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="count_consu_repuest"/>
+                                </span>
+                                <span class="o_stat_text">Pedidos repuestos</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+
+                <div name="button_box" position="inside">
+                    <button name="account_move_mainte_action_open" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('amount_account_maitenance', '=', 0)]}" context="{'search_default_maintenance_request_id': active_id}">
+                        <div class="o_stat_info">
+                            <span class="o_form_field o_stat_value">
+                             <field name="amount_account_maitenance" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                            </span>
+                            <span class="o_stat_text">Facturas</span>
+                        </div>
+                    </button>
+                </div>
+
+                <div name="button_box" position="inside">
+                    <button name="lines_move_mainte_action_open" type="object" class="oe_stat_button" icon="fa-stack-overflow" attrs="{'invisible': [('amount_repuest_maitenance', '=', 0)]}" context="{'search_default_maintenance_request_id': active_id}">
+                        <div class="o_stat_info">
+                            <span class="o_form_field o_stat_value">
+                             <field name="amount_repuest_maitenance" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                            </span>
+                            <span class="o_stat_text">Repuestos consumo</span>
+                        </div>
+                    </button>
+                </div>
+
+                <div name="button_box" position="inside">
+                    <button name="lines_workforce_action_open" type="object" class="oe_stat_button" icon="fa-users" attrs="{'invisible': [('amount_repuest_maitenance', '=', 0)]}" context="{'search_default_maintenance_request_id': active_id}">
+                        <div class="o_stat_info">
+                            <span class="o_form_field o_stat_value">
+                             <field name="amount_mrp_wokrforce" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                            </span>
+                            <span class="o_stat_text">Mano de obra</span>
+                        </div>
+                    </button>
+                </div>
+
+            </field>
+
+        </record>
+
+         <record id="inherit_hr_equipment_request_view_tree" model="ir.ui.view">
+            <field name="name">view.equipment.request.tree.inherit</field>
+            <field name="model">maintenance.request</field>
+            <field name="inherit_id" ref="maintenance.hr_equipment_request_view_tree"/>
+            <field name="arch" type="xml">
+                <field name="stage_id" position="after">
+                    <field name="currency_id" invisible="1" />
+                    <field name="amount_account_maitenance" string="Facturas" optional="hide" widget='monetary' options="{'currency_field': 'currency_id'}" sum="Total"/>
+                    <field name="amount_repuest_maitenance" string="Repuestos" widget='monetary' options="{'currency_field': 'currency_id'}" optional="hide" sum="Total"/>
+                    <field name="amount_mrp_wokrforce" string="Mano de obra" widget='monetary' options="{'currency_field': 'currency_id'}" optional="hide" sum="Total"/>
+                    <field name="sum_total" string="Total costo" widget='monetary' options="{'currency_field': 'currency_id'}" optional="hide" sum="Total"/>
+                </field>      
+                <field name="name" position="before">
+                    <field name="cod_complete" string="Referencia"/>
+                </field>          
+            </field>
+        </record>
+
+
+        <record id="inherit_hr_equipment_request_view_search" model="ir.ui.view">
+            <field name="name">equipment.request.search.inherit</field>
+            <field name="model">maintenance.request</field>
+            <field name="inherit_id" ref="maintenance.hr_equipment_request_view_search"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="pre_cod" string="Referencia"/>
+                </field>                                
+            </field>
+        </record>
+
+    </data>
+</odoo>

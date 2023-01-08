@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- res.partner inherit form view -->
+        <record id="view_partner_form_extend" model="ir.ui.view">
+            <field name="name">view.partner.form.extend</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <group name="sale" position="inside">
+                    <field name="apply_credit_limit" groups="partner_credit_limit.group_access_credit_limit"/>
+                    <field name="credit_limit" force_save="1" widget="monetary" attrs="{'readonly': [('apply_credit_limit', '=', False)]}" options="{'currency_field': 'currency_id'}" groups="partner_credit_limit.group_access_credit_limit"/>
+                    <field name="show_credit_limit" invisible="True"/>
+                    <field name="credit_limit" force_save="1" widget="monetary"  attrs="{'invisible': [('show_credit_limit', '=', False)]}" options="{'currency_field': 'currency_id'}"  readonly="True" groups="sales_team.group_sale_salesman_all_leads,sales_team.group_sale_salesman,sales_team.group_sale_manager"/>
+                </group>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <!--VISTA DE LISTA-->
+        <record id="view_quality_control_points_tree" model="ir.ui.view">
+            <field name="name">view.quality.control.points.tree</field>
+            <field name="model">quality.control.points</field>
+            <field eval="100" name="priority"/>
+            <field name="arch" type="xml"> 
+                <tree string="Vista de lista Puntos de control" create="true" edit="true" import="true">
+                    <field name="production_id" invisible="0"/>
+                    <field name="create_date" string="Creado el"/>
+                    <field name="cat_process"/>
+                    <field name="product_id" />
+                    <field name="turn"/>
+                    <field name="create_uid" string="Creado por"/>
+                </tree>
+            </field>
+        </record>
+     <!--VISTA DE FORM-->
+         <record id="view_quality_control_points_form" model="ir.ui.view">
+            <field name="name">view.quality.control.points.form</field>
+            <field name="model">quality.control.points</field>
+            <field eval="100" name="priority"/>
+            <field name="arch" type="xml">
+                <form>
+                    <!--HEADER FORM-->
+                    <header>
+                    </header>
+                    <!--SHEET FORM-->
+                    <sheet>
+                        <div class="oe_tittle" name="title_quality_control">
+                                        <h1>
+                                            <field name="name" />
+                                        </h1>
+                                    </div>
+                        <group>
+                            <!--IZQUIERDA //////////////////////////-->
+                            <group>
+                                <!-- se trae de otro modulo-->
+                                <field name="production_id" invisible="0" />       
+                                <field name="product_id" />
+                                <field name="turn" />
+                                <field name="create_date" string="Fecha/hora Control"/>                                
+                                <field name="company_id" invisible="1"/>
+                                <field name="move_id" invisible="1"/> 
+                                <field name="cat_process" />   
+                                <field name="maintance_equipment_ids" widget="many2many_tags"/>
+                                <field name="employee_id" widget="many2many_tags" domain="[('department_id', 'ilike', 'Produc')]"/>
+                                <field name="create_uid" string="Creado por"/>                             
+                                <!-- Envasado-->
+                                <H3>Envasado</H3>
+                                    <field name="grams_weights_qty" />
+                                    <field name="meets_weight" />
+                                    <field name="horizontal_seal" />
+                                    <field name="vertical_seal" />
+                                    <field name="centered_art" />
+                                    <field name="batch_printing" />
+                                    <field name="date_printing" />
+                                <!--galletas Extrusion-->
+                                <H3>Galletas Extrusion</H3>
+                                    <field name="rpm_ex_qty" />
+                                    <field name="rpm_dos_qty" />
+                                    <field name="rpm_rodihal_qty" />
+                                    <field name="rpm_rodicu_qty" />
+                                    <field name="rpm_bomb_qty" />
+                                    <field name="rpm_band_qty" />
+                                <!--galletas Extrusion-->
+                                <H3>Bases Extrusion</H3>
+                                    <field name="diametro_qty" />
+                                    <field name="weight_bag" />
+                                <!--First Class-->
+                                <H3>First Class</H3>
+                                    <field name="clean_jar" />
+                                    <field name="correct_sleeve" />
+                                    <field name="add_sleeve" />
+                                    <field name="sealing_margin" />
+                                    <field name="security_seal" />
+                            </group>
+                              <!--DERECHA///////////////////////-->
+                            <group>
+                                <!--Seleccion compartida-->
+                                <H3>Selecccion compartida</H3>
+                                    <field name="seleccion" />
+                                    <field name="temp_qty" />
+                                    <field name="color_s" />
+                                    <field name="sabor_s" />
+                                    <field name="olor_s" />
+                                    <field name="apariencia_s" />
+                                    <field name="textura_s" />
+                                <!--Encajado-->
+                                <H3>Encajado</H3>
+                                    <field name="box_weight" />
+                                    <field name="armed_box" />
+                                    <field name="box_sealing" />
+                                    <field name="bag_sealing" />
+                                    <field name="labelled" />
+                                    <field name="parquet" />
+                                <!--Chocotaza-->
+                                <H3>Chocotaza</H3>
+                                    <field name="vibrated_time" />
+                                    <field name="bar_length_qty" />
+                                    <field name="bar_width_qty" />
+                                    <field name="bar_height_qty" />
+                                    <field name="temp_room_qty" />
+                                <!--Confiteria-->
+                                <H3>Confiteria</H3>
+                                    <field name="terminated_granel" />
+                                    <field name="employee_id_user" domain="[('job_id', 'ilike', 'Inocu')]" />
+                                    
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+                
+            </field>
+        </record>>
+
+
+    <!--VISTA DE BUSQUEDA-->
+        <record id="view_quality_control_points_search" model="ir.ui.view">
+            <field name="name">view.quality.control.points.search</field>
+            <field name="model">quality.control.points</field>
+            <field name="arch" type="xml">
+                <search string="Busqueda por codigo">
+                    <field name="production_id" string="Por codigo" />
+                    <field name="product_id" string="Producto" />
+                    <separator/>
+                    <filter name="filter_today" string="Hoy" domain="[('create_date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                    <separator/>
+                    <group name="group_by_quality_points" string="Group by">
+                        <filter name="group_by_date" string="Por Fecha" context="{'group_by': 'create_date'}" />
+                        <separator/>
+                        <filter name="group_by_create_by" string="Por creador" context="{'group_by': 'create_uid'}" />
+                        <filter name="group_by_product" string="Producto" context="{'group_by': 'product_id'}" />
+                        <filter name="group_by_name" string="Por codigo" context="{'group_by': 'production_id'}" />
+                    </group>                    
+                </search>
+            </field>
+        </record>
+
+        <!--Vista de Pivote-->
+        <record id="view_quality_control_points_pivot" model="ir.ui.view">
+            <field name="name">view.quality.control.points.pivot</field>
+            <field name="model">quality.control.points</field>
+            <field name="arch" type="xml">
+                <pivot string="Pivote puntos de calidad" disable_linking="true">
+                    <field name="production_id" type="row"/>
+                    <field name="grams_weights_qty" type="sum"/>
+                </pivot> 
+            </field>
+        </record>
+
+
+        <!--VISTA DE GRAFICO-->
+        <record id="view_quality_control_points_graph" model="ir.ui.view">
+            <field name="name">view.quality.control.points.graph</field>
+            <field name="model">quality.control.points</field>
+            <field name="arch" type="xml">
+                <graph string="Grafico de puntos de control" type="bar">
+                    <field name="production_id" />
+                    <field name="product_id" />
+                    <field name="grams_weights_qty" type="measure" />
+                </graph>
+            </field>
+        </record>
+
+
+        <record id="action_quality_control_points" model="ir.actions.act_window">
+            <field name="name">Puntos de control</field>
+            <field name="res_model">quality.control.points</field>
+            <field name="view_mode">tree,form,graph,pivot</field>
+            <field name="view_id" ref="view_quality_control_points_tree"/>
+            <field name="search_view_id" ref="view_quality_control_points_search"/>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                Puntos de control de calidad
+                </p>
+            </field>
+        </record>
+
+        
+
+
+    <!--menu item-->
+        <menuitem name="Puntos de control"
+            id="menu_root_quality_control_points"
+            web_icon="quality_control_points,static/description/icon.png"
+            sequence="9"/>
+        <menuitem
+            id="submenu_quality_control_points"
+            name="Registros Control de calidad"
+            parent="menu_root_quality_control_points"
+            action="action_quality_control_points"
+            sequence="2"/>
+
+
+
+    </data>
+</odoo>

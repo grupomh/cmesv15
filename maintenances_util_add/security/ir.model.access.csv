@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_maintenances_bom,access.maintenances.bom,model_maintenances_bom,maintenances_util_add.group_maintenances_bom_user,1,1,1,0
+access_maintenances_bom_manager,access.maintenances.bom.manager,model_maintenances_bom,maintenances_util_add.group_maintenances_bom_manager,1,1,1,1

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	
+	<template id="report_sales_commission">
+	    <t t-call="web.html_container">
+	       
+                <t t-call="web.external_layout">
+                    <div class="page">
+                    	<center><h4>Liquidaciones de Comisiones de Ventas</h4>
+                    		<h6>  <span t-esc="date_start"/> al 
+                    		 <span t-esc="date_end"/></h6>
+                    		<b>Vendedor: </b> <span t-esc="name_user"/>
+                    	</center>
+                    	 	<table class="table table-bordered" name="pdc_table" width="100%">
+                        		<tr>
+                        			<th width="15%" style="text-align:center;">Fecha</th>
+                        			<th width="15%" style="text-align:center;">Descripción</th>
+                        			<th width="15%" style="text-align:center;">Ref. Origen</th>
+                        			<th width="10%" style="text-align:center;">Tipo de Comision</th>
+                        			<th width="15%" style="text-align:center;">Comision</th>
+                        			<th width="10%" style="text-align:center;">Producto</th>
+                        			<th width="10%" style="text-align:center;">Socio</th>
+                        			<th width="10%" style="text-align:center;">Monto</th>
+                        		</tr>
+                        		<tr t-foreach="order_list" t-as="order">
+                        			<td width="15%"><span t-esc="order.get('date','')"/></td>
+                        			<td width="15%"><span t-esc="order.get('name','')"/></td>
+                        			<td width="15%"><span t-esc="order.get('order_ref','')"/></td>
+                        			<td width="10%"><span t-esc="order.get('commission_type','')"/></td>
+                        			<td width="15%"><span t-esc="order.get('commission_name','')"/></td>
+                        			<td width="10%"><span t-esc="order.get('product_id','')"/></td>
+                        			<td width="10%"><span t-esc="order.get('partner_id','')"/></td>
+                        			<td width="10%"><span t-esc="order.get('amount','')"/></td>
+                        		</tr>
+                        	</table>
+                    </div>
+	        </t>
+	    </t>
+	</template>
+    
+    <record id="action_report_sales_commission" model="ir.actions.report">
+        <field name="name">Liquidaciones de venta Comisión</field>
+        <field name="model">report.sh_sales_commision.report_sales_commission</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">sh_sales_commision.report_sales_commission</field>
+        <field name="print_report_name">'Sales Commission Report'</field>        
+    </record>  
+</odoo>
