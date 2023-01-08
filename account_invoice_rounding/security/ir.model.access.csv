@@ -1,2 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_invoice_apply_rouding_manager,access_invoice_rouding_manager,model_account_move_line,account_invoice_rounding.group_apply_rouding,1,1,1,1

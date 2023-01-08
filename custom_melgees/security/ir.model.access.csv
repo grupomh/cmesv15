@@ -1,5 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_product_template_user,access.product.template.user,product.model_product_template,custom_product_user,1,0,0,0
-access_product_template_creation_manager,product.template.creation.manager,product.model_product_template,group_product_creation,1,1,1,1
-access_product_product_creation_manager,product.product.creation.manager,product.model_product_product,group_product_creation,1,1,1,1
-access_res_partner_creation_manager,res.partner.creation.manager,base.model_res_partner,group_contact_creation,1,1,1,1
