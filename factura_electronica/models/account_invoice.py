@@ -254,41 +254,41 @@ class AccountMove(models.Model):
 		return f_str
 
 
-	def button_cancel(self):
-		res = super(AccountMove, self).button_cancel()
-		self.action_cancel_eface()
-		return res
+	# def button_cancel(self):
+	# 	res = super(AccountMove, self).button_cancel()
+	# 	self.action_cancel_eface()
+	# 	return res
 	
-	def action_cancel_eface(self):
-		url = ""
-		#url = "https://gface.ecofactura.com.gt/gface/servlet/ar_anu_fac?wsdl"
-		for invoice in self:
-			#if not invoice.journal_id.sequence_id.url_ws_anulacion:
-			#	raise UserError(('Debe configurar un URL para anular documentos'))
-			url = invoice.journal_id.sequence_id.url_ws_anulacion
-			if invoice.state != 'draft':
-				if (invoice.journal_id.is_eface == True) and (invoice.journal_id.type == 'sale'):
-					if not invoice.journal_id.sequence_id.url_ws_anulacion:
-						raise UserError(('Debe configurar un URL para anular documentos'))
-					try:
-						codcliente = invoice.journal_id.sequence_id.cod_cliente
-						codusuario = invoice.journal_id.sequence_id.user_eface
-						nitemisor = invoice.journal_id.sequence_id.llave_eface
-						resolucion = invoice.journal_id.sequence_id.resolucion
-						establecimiento = invoice.journal_id.sequence_id.establecimiento
-						doc = invoice.journal_id.sequence_id.tipo
-						dispositivo = invoice.journal_id.sequence_id.dispositivo
-						no_eface = invoice.serie.split('_')
-						ws = Client(url)
-						response = ws.service.Execute(codcliente, codusuario, nitemisor, establecimiento, resolucion, doc, no_eface[2], dispositivo, datetime.strptime(str(invoice.invoice_date), '%Y-%m-%d').year, invoice.no_documento)
-						#raise except_orm(_('Error!'),_("%s." % (response)))
-						if response:
-							#raise except_orm(_('Error!'),_("%s." % (response)))
-							print(response)
-							invoice.write({'notas': response})
-							return True
-					except Exception as e:
-						raise UserError(('Error al genera Factura Electronica: %s')%(e))
+	# def action_cancel_eface(self):
+	# 	url = ""
+	# 	#url = "https://gface.ecofactura.com.gt/gface/servlet/ar_anu_fac?wsdl"
+	# 	for invoice in self:
+	# 		#if not invoice.journal_id.sequence_id.url_ws_anulacion:
+	# 		#	raise UserError(('Debe configurar un URL para anular documentos'))
+	# 		url = invoice.journal_id.sequence_id.url_ws_anulacion
+	# 		if invoice.state != 'draft':
+	# 			if (invoice.journal_id.is_eface == True) and (invoice.journal_id.type == 'sale'):
+	# 				if not invoice.journal_id.sequence_id.url_ws_anulacion:
+	# 					raise UserError(('Debe configurar un URL para anular documentos'))
+	# 				try:
+	# 					codcliente = invoice.journal_id.sequence_id.cod_cliente
+	# 					codusuario = invoice.journal_id.sequence_id.user_eface
+	# 					nitemisor = invoice.journal_id.sequence_id.llave_eface
+	# 					resolucion = invoice.journal_id.sequence_id.resolucion
+	# 					establecimiento = invoice.journal_id.sequence_id.establecimiento
+	# 					doc = invoice.journal_id.sequence_id.tipo
+	# 					dispositivo = invoice.journal_id.sequence_id.dispositivo
+	# 					no_eface = invoice.serie.split('_')
+	# 					ws = Client(url)
+	# 					response = ws.service.Execute(codcliente, codusuario, nitemisor, establecimiento, resolucion, doc, no_eface[2], dispositivo, datetime.strptime(str(invoice.invoice_date), '%Y-%m-%d').year, invoice.no_documento)
+	# 					#raise except_orm(_('Error!'),_("%s." % (response)))
+	# 					if response:
+	# 						#raise except_orm(_('Error!'),_("%s." % (response)))
+	# 						print(response)
+	# 						invoice.write({'notas': response})
+	# 						return True
+	# 				except Exception as e:
+	# 					raise UserError(('Error al genera Factura Electronica: %s')%(e))
 
 	def action_download_eface(self):
 		#order_id = self.env['pos.order'].search([('id', '=', int(order['order_id']))])
