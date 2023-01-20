@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- <record id="paperformat_book" model="report.paperformat">
+    <record id="paperformat_book" model="report.paperformat">
         <field name="name">Purchase and Sale Book</field>
         <field name="default" eval="True" />
         <field name="format">A2</field>
@@ -13,6 +13,6 @@
         <field name="header_line" eval="False" />
         <field name="header_spacing">0</field>
         <field name="dpi">90</field>
-    </record> -->
+    </record>
 
 </odoo>
