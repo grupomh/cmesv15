@@ -6,7 +6,7 @@ from odoo.exceptions import UserError
 import base64
 from odoo.addons.ricoh_printers import numero_a_texto
 import json
-
+import re
 import logging
 
 _logger = logging.getLogger( __name__ )
@@ -16,6 +16,7 @@ class AccountMove(models.Model):
     _inherit = 'account.move'
     
     count_print = fields.Integer('Contador', readonly=True, default=0)
+
 
     def print_ricoh_files(self):
         base_url = self.env['ir.config_parameter'].get_param('web.base.url')
@@ -271,14 +272,14 @@ class AccountMove(models.Model):
             _logger.info("Amount Taxes by Group")
             #Sin IVA y otros impuestos para FCF y FEX
             if inv.journal_id.ricoh_type not in ('FCF', 'FEX'):
-                for tax in inv.amount_by_group:
+                for tax in inv.tax_totals_json:
                     _logger.info(tax)
                     if str(tax[0]).upper() == 'IVA':
                         amount_iva = float(tax[1])
                         invoice_dict.update({
                             'IVA': "{0:,.2f}".format(round((amount_iva * multiplier), 2)),
                         })
-                for tax in inv.amount_by_group:
+                for tax in inv.tax_totals_json:
                     _logger.info(tax)
                     if str(tax[0]).upper() == 'PERCIBIDO':
                         amount_percibido = float(tax[1])
@@ -496,14 +497,14 @@ class AccountMove(models.Model):
             _logger.info("Amount Taxes by Group")
             #Sin IVA y otros impuestos para FCF y FEX
             if inv.journal_id.ricoh_type in ('CDR'):
-                for tax in inv.amount_by_group:
+                for tax in inv.tax_totals_json:
                     _logger.info(tax)
                     if str(tax[0]).upper() == 'IVA':
                         amount_iva = float(tax[1])
                         invoice_dict.update({
                             'IVA': "{0:,.2f}".format(round((amount_iva * multiplier), 2)),
                         })
-                for tax in inv.amount_by_group:
+                for tax in inv.tax_totals_json:
                     _logger.info(tax)
                     if 'IVA RETENIDO' in str(tax[0]).upper():
                         amount_retenido = float(tax[1])
@@ -743,14 +744,14 @@ class AccountMove(models.Model):
             _logger.info("Amount Taxes by Group")
             #Sin IVA y otros impuestos para FCF y FEX
             if inv.journal_id.ricoh_type in ('FSE'):
-                for tax in inv.amount_by_group:
+                for tax in inv.tax_totals_json:
                     _logger.info(tax)
                     if 'IVA' in str(tax[0]).upper():
                         amount_iva = float(tax[1])
                         invoice_dict.update({
                             'IVA': "{0:,.2f}".format(round((amount_iva * multiplier), 2)),
                         })
-                for tax in inv.amount_by_group:
+                for tax in inv.tax_totals_json:
                     _logger.info(tax)
                     if 'RETEN' in str(tax[0]).upper():
                         amount_retenido = float(tax[1])
