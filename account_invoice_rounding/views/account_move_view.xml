@@ -8,10 +8,9 @@
 			<field name="arch" type="xml">
 				<xpath expr="//field[@name='price_unit']" position="after">
                     <field name="apply_rouding" invisible="1"/>
-					<field name="amount_rouding" force_save="1" attrs="{'readonly': [('apply_rouding', '=', False)]}"/>
+					<field name="amount_rouding" force_save="1" attrs="{'readonly': [('apply_rouding', '=', False)]}" optional="hide"/>
 				</xpath>
 			</field>
 		</record>
-
 	</data>
 </odoo>

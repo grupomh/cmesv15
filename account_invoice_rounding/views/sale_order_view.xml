@@ -9,7 +9,7 @@
 		<field name="arch" type="xml">
 			<xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="after">
                 <field name="apply_rouding" invisible="1"/>
-				<field name="amount_rouding" force_save="1" groups="account_invoice_rounding.group_apply_rouding"/>
+				<field name="amount_rouding" force_save="1" groups="account_invoice_rounding.group_apply_rouding" optional="hide"/>
 			</xpath>
 		</field>
 	</record>
@@ -21,7 +21,7 @@
 		<field name="arch" type="xml">
 			<xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="after">
                 <field name="apply_rouding" invisible="1"/>
-				<field name="amount_rouding" force_save="1" groups="account_invoice_rounding.group_apply_rouding"/>
+				<field name="amount_rouding" force_save="1" groups="account_invoice_rounding.group_apply_rouding" optional="hide"/>
 			</xpath>
 		</field>
 	</record>

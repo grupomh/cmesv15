@@ -38,10 +38,10 @@ class SaleOrderLine(models.Model):
                 'price_subtotal': taxes['total_excluded'] - line.amount_rouding,
             })
 
-    def _prepare_invoice_line(self):
-        res = super(SaleOrderLine, self)._prepare_invoice_line()
-        res.update({
-            'amount_rouding': self.amount_rouding,
-        })
-        return res
+    # def _prepare_invoice_line(self):
+    #     res = super(SaleOrderLine, self)._prepare_invoice_line()
+    #     res.update({
+    #         'amount_rouding': self.amount_rouding,
+    #     })
+    #     return res
 SaleOrderLine()
